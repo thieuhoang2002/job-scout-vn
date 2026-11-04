@@ -1,0 +1,29 @@
+{
+  "name": "Nguyễn Văn A",
+  "headline": "Junior Fullstack Developer",
+  "experience_years": 1.5,
+  "summary": "Fullstack Developer chuyên sâu React, Next.js, Node.js, C# .NET và công cụ tự động hóa dữ liệu tại TP.HCM.",
+  "skills": [
+    "React",
+    "Next.js",
+    "TypeScript",
+    "Tailwind CSS",
+    "Node.js",
+    "C# / .NET",
+    "PostgreSQL",
+    "MongoDB",
+    "Redis",
+    "Selenium / Scraping",
+    "SQL"
+  ],
+  "featured_projects": [
+    {
+      "title": "E-Commerce Management Portal",
+      "info": "Next.js, React, Node.js, MongoDB"
+    },
+    {
+      "title": "Data Pipeline & Crawl Bot",
+      "info": "Python, Selenium, PostgreSQL"
+    }
+  ]
+}
