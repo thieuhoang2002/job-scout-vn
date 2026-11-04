@@ -32,9 +32,9 @@ Khi tìm kiếm việc làm IT tại Việt Nam trên các trang tuyển dụng 
 | Nền tảng | Trạng thái thực tế | Kỹ thuật bóc tách REA |
 | :--- | :---: | :--- |
 | **ITViec.com** | ✅ **Sẵn sàng 100%** | Bóc tách trực tiếp danh sách việc làm Software Dev, Tech Startups, Outsource xịn tại TP.HCM. |
+| **LinkedIn Jobs** | ✅ **Sẵn sàng 100%** | Khai thác cổng Guest Job Search API của LinkedIn không cần tài khoản đăng nhập. |
+| **CareerViet.vn** *(CareerBuilder)* | ✅ **Sẵn sàng 100%** | Bóc tách việc làm IT từ khối Ngân hàng, Doanh nghiệp FDI và Tập đoàn lớn. |
 | **Vieclam24h.vn** | ✅ **Sẵn sàng 100%** | Khai thác Next.js SSR `__NEXT_DATA__` (Cào hàng trăm việc làm trong 1.5s, không cần trình duyệt). |
-| **CareerViet.vn** *(CareerBuilder)* | 🔄 *Đang viết Adapter* | Khai thác endpoint tìm kiếm việc làm doanh nghiệp FDI & Ngân hàng. |
-| **LinkedIn Jobs** | 🔄 *Đang viết Adapter* | Khai thác Guest Search API không cần đăng nhập. |
 
 ---
 
@@ -57,7 +57,8 @@ flowchart TD
     subgraph ScrapingLayer ["2. REA Zero-Browser Scraper"]
         S1["Vieclam24h Adapter (Đã chạy)"]
         S2["ITViec Adapter (Đã chạy)"]
-        S3["CareerViet / LinkedIn (Đang hoàn thiện)"]
+        S3["CareerViet Adapter (Đã chạy)"]
+        S4["LinkedIn Adapter (Đã chạy)"]
     end
     
     Parser --> MatchEngine["3. Compatibility Match Engine<br/>(Phân loại Dev vs Helpdesk & Chấm điểm 0-100)"]

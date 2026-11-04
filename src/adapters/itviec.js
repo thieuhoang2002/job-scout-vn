@@ -107,3 +107,4 @@ class ItviecAdapter {
 }
 
 module.exports = ItviecAdapter;
+
