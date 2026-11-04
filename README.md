@@ -7,6 +7,9 @@
 [![Node.js](https://img.shields.io/badge/Node.js-%3E%3D18.0.0-green.svg)](https://nodejs.org/)
 [![Architecture: Zero-Browser](https://img.shields.io/badge/Architecture-Zero--Browser%20REA-orange.svg)](#t%E1%BA%A1i-sao-ch%E1%BB%8Dn-rea)
 [![Agent Skill: Antigravity | Claude | Codex](https://img.shields.io/badge/Agent%20Skill-Antigravity%20%7C%20Claude%20%7C%20Codex-purple.svg)](SKILL.md)
+[![Sponsor: Ko-fi](https://img.shields.io/badge/Ko--fi-Donate-FF5E5B.svg?logo=ko-fi&logoColor=white)](https://ko-fi.com/thhoang0903)
+[![Sponsor: BuyMeACoffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-Donate-FFDD00.svg?logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/thhoang0903)
+[![Sponsor: PayPal](https://img.shields.io/badge/PayPal-Donate-00457C.svg?logo=paypal&logoColor=white)](https://paypal.me/thieuhoang2209)
 
 ---
 
@@ -18,6 +21,18 @@ Khi tìm kiếm việc làm IT tại Việt Nam trên các trang tuyển dụng 
 3. **Chi phí công cụ đắt đỏ:** Các tool AI quốc tế (Teal, Simplify, Sonara) thu \$20 - \$50/tháng nhưng hoàn toàn tê liệt trước cấu trúc web và ngôn ngữ tiếng Việt tại Việt Nam.
 
 **`job-scout-vn`** ra đời để giải quyết triệt để vấn đề này theo tư duy **Local-First & Agentic AI** (Zero Server Cost, Bảo mật tuyệt đối).
+
+---
+
+## 🌐 Các Nền Tảng Hỗ Trợ & Khả Năng "Soi" Tuyển Dụng
+
+| Nền tảng | Trạng thái | Kỹ thuật REA bóc tách ngầm |
+| :--- | :---: | :--- |
+| **Vieclam24h.vn** | ✅ **Sẵn sàng 100%** | Khai thác trực tiếp Next.js SSR `__NEXT_DATA__` (Cào 150 jobs trong 1.5s, không cần trình duyệt). |
+| **ITViec.com** | 🔄 *Đang tích hợp (Adapter v1.1)* | Bóc tách internal REST/GraphQL API & SSR state của ITViec. |
+| **TopCV.vn** | 🔄 *Đang tích hợp (Adapter v1.1)* | Phân tích API endpoint tìm việc và giải mã JSON payload. |
+| **TopDev.vn** | 📋 *Lộ trình v1.2* | Khai thác API danh sách tuyển dụng của TopDev. |
+| **Portfolio / CV cá nhân** | ✅ **Sẵn sàng 100%** | Bóc tách tự động mọi website Next.js App Router (RSC `self.__next_f.push`), JSON-LD Structured Data, hoặc file Markdown/Text/JSON CV. |
 
 ---
 
@@ -112,11 +127,31 @@ Dự án được thiết kế để cộng đồng dễ dàng đóng góp thêm
 
 ---
 
-## 👨‍💻 Tác Giả & Đóng Góp (Author)
+## 💖 Tài Trợ & Ủng Hộ (Sponsor This Project)
+
+Nếu **Job Scout VN** giúp bạn tìm được công việc ưng ý hoặc tiết kiệm thời gian lọc việc, bạn có thể ủng hộ tách cà phê cho tác giả để duy trì và mở rộng thêm các sàn tuyển dụng mới:
+
+- ☕ **Ko-fi:** [ko-fi.com/thhoang0903](https://ko-fi.com/thhoang0903)
+- 🥤 **Buy Me a Coffee:** [buymeacoffee.com/thhoang0903](https://buymeacoffee.com/thhoang0903)
+- 💳 **PayPal:** [paypal.me/thieuhoang2209](https://paypal.me/thieuhoang2209)
+- 💖 **GitHub Sponsors:** [@thieuhoang2002](https://github.com/sponsors/thieuhoang2002)
+
+---
+
+## 📜 Quy Chuẩn Cộng Đồng (Community Health)
+
+- [Quy tắc ứng xử (Code of Conduct)](CODE_OF_CONDUCT.md)
+- [Hướng dẫn đóng góp (Contributing Guide)](CONTRIBUTING.md)
+- [Chính sách bảo mật (Security Policy)](SECURITY.md)
+- [Giấy phép phần mềm (MIT License)](LICENSE)
+
+---
+
+## 👨‍💻 Tác Giả (Author)
 
 * **Thiều Việt Hoàng (Sky)** — *Software Engineer & Automation Specialist*
 * **Portfolio:** [thhoang.io.vn](https://thhoang.io.vn)
 * **GitHub:** [@thieuhoang2002](https://github.com/thieuhoang2002)
 * **Email:** thhoang0903@gmail.com
 
-Mọi ý tưởng đóng góp hoặc Pull Request (thêm adapter sàn mới, cải tiến thuật toán chấm điểm) đều được hoan nghênh nồng nhiệt! ⭐ Hãy tặng repo một Star nếu nó giúp ích cho hành trình tìm việc của bạn!
+⭐ **Hãy để lại 1 Star trên GitHub nếu bạn thấy dự án này hữu ích!**
