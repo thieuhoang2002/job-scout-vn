@@ -70,84 +70,61 @@ flowchart TD
 
 ---
 
-## 📖 HƯỚNG DẪN SỬ DỤNG TỪ A ĐẾN Z (AI CŨNG DÙNG ĐƯỢC)
+## 🚀 Cách Sử Dụng (Dành Cho Người Lười — AI Làm Hết Từ A-Z)
 
-Bạn không cần phải là chuyên gia dòng lệnh, chỉ cần làm theo **3 bước đơn giản** dưới đây:
+Bạn **không cần phải gõ code phức tạp hay mở terminal**. Hãy để AI Agent làm toàn bộ công việc tìm kiếm và lọc việc:
 
-### ⚡ 3 Bước Bắt Đầu Cực Nhanh (Dành cho người mới)
+### 1. Kích hoạt trực tiếp bằng 1 câu lệnh trong AI Chat
+Nếu bạn đang dùng **Google Antigravity**, **Claude Code**, hoặc **Codex**, chỉ cần gõ:
+```text
+/job-scout-vn
+```
+Hoặc chat tự nhiên bằng tiếng Việt:
+> *"Tìm giúp mình các việc làm IT phù hợp với portfolio https://thhoang.io.vn"*
 
-#### Bước 1: Tải công cụ về máy
-Mở Terminal (hoặc PowerShell trên Windows) và gõ:
+✨ **AI sẽ tự động:**
+1. Quét portfolio / CV của bạn để rút ra kỹ năng và số năm kinh nghiệm.
+2. Cào tức thì hàng trăm tin tuyển dụng từ các sàn uy tín.
+3. Chấm điểm độ tương thích ($0 - 100\%$) và lọc sạch tin Helpdesk / Cài Win.
+4. Bật sẵn **Dashboard HTML tương tác** cho bạn chỉ việc click nộp hồ sơ!
+
+---
+
+### 2. Kết Quả Bạn Sẽ Nhận Được
+
+Một file Dashboard HTML độc lập, mở ngay trên trình duyệt mà không cần cài server:
+- 🎯 **Top 5 Việc Làm Khả Thi Nhất (Spotlight):** Vị trí có tỷ lệ đậu cao nhất kèm phân tích lý do cụ thể.
+- 🛡️ **Nhãn `DEV MATCH`:** Tự động lọc riêng việc lập trình phần mềm thực thụ, né bẫy Helpdesk / Bán hàng.
+- 📈 **Biểu Đồ Thị Trường:** Phân bổ dải lương thực tế và mức độ cạnh tranh theo từng công nghệ.
+- ⚡ **1-Click Ứng Tuyển:** Link trực tiếp tới bài đăng tuyển dụng gốc của doanh nghiệp.
+
+---
+
+<details>
+<summary><strong>🛠️ Dành cho lập trình viên muốn chạy qua Dòng Lệnh (CLI Mode)</strong></summary>
+
+<br>
+
+Nếu bạn muốn tích hợp vào script tự động hoặc chạy thủ công qua Terminal:
+
 ```bash
-git clone https://github.com/thieuhoang2002/job-scout-vn.git
-cd job-scout-vn
+# 1. Chạy với link website Portfolio
+node cli.js --url https://thhoang.io.vn
+
+# 2. Hoặc chạy với file CV có sẵn trên máy
+node cli.js --cv ./examples/sample_cv.md --pages 4
+
+# 3. Mở kết quả trên trình duyệt
+start output/dashboard.html
 ```
 
-#### Bước 2: Chạy quét việc làm (Chọn 1 trong 2 cách)
+**Bảng cờ lệnh (CLI Flags):**
+- `--url <link>`: Đường dẫn website Portfolio cá nhân.
+- `--cv <path>`: Đường dẫn file CV Markdown (`.md`), Text (`.txt`), hoặc JSON (`.json`).
+- `--pages <num>`: Số trang tuyển dụng cần quét (Mặc định: 8 trang ~150 jobs).
+- `--output <path>`: Vị trí lưu file HTML (Mặc định: `./output/dashboard.html`).
 
-* **Cách A — Dùng link Website Portfolio của bạn (Đơn giản nhất):**
-  ```bash
-  node cli.js --url https://thhoang.io.vn
-  ```
-  *(Tool sẽ tự động "đọc" website của bạn, nhận diện bạn làm công nghệ gì, có bao nhiêu năm kinh nghiệm và tự động đối chiếu).*
-
-* **Cách B — Dùng file CV có sẵn trên máy:**
-  ```bash
-  node cli.js --cv ./examples/sample_cv.md --pages 4
-  ```
-  *(Bạn có thể tạo một file `my_cv.md` hoặc `my_cv.txt` ghi tóm tắt kinh nghiệm của mình rồi truyền vào cờ `--cv`).*
-
-#### Bước 3: Xem Dashboard tương tác trực quan
-Sau khi chạy xong (chỉ mất ~2 đến 3 giây), tool sẽ thông báo file kết quả:
-* **Trên Windows:**
-  ```cmd
-  start output\dashboard.html
-  ```
-* **Trên macOS / Linux:**
-  ```bash
-  open output/dashboard.html
-  ```
-Trình duyệt sẽ tự động bật lên Dashboard với đầy đủ biểu đồ, điểm tương thích và link nộp hồ sơ!
-
----
-
-### 🤖 Cách Dùng Trực Tiếp Trong AI Agent (Antigravity, Claude Code, Codex)
-
-Nếu bạn đang sử dụng các trợ lý lập trình thông minh như **Google Antigravity** hoặc **Claude Code**:
-
-1. Copy toàn bộ thư mục `job-scout-vn` vào thư mục skills:
-   - **Antigravity:** `~/.gemini/config/skills/job-scout-vn` (hoặc `~/.gemini/antigravity/builtin/skills/job-scout-vn`)
-   - **Claude Code:** `.claude/skills/job-scout-vn`
-2. Sử dụng lệnh gõ tắt:
-   ```text
-   /job-scout-vn
-   ```
-3. Hoặc chỉ cần chat bằng tiếng Việt tự nhiên:
-   > *"Tìm giúp tôi các công việc Fullstack Web ở TP.HCM phù hợp với portfolio https://thhoang.io.vn của tôi"*
-   > 
-   > AI sẽ tự động kích hoạt Skill, cào dữ liệu mới nhất, phân tích và xuất Dashboard cho bạn ngay trong cuộc trò chuyện!
-
----
-
-### 🎛️ Bảng Tra Cứu Các Tùy Chọn Lệnh (CLI Reference)
-
-| Cờ lệnh (Flag) | Ý nghĩa | Ví dụ sử dụng |
-| :--- | :--- | :--- |
-| `--url <link>` | Đường dẫn website Portfolio trực tuyến. | `node cli.js --url https://portfolio-cua-ban.com` |
-| `--cv <path>` | Đường dẫn tới file CV cá nhân (`.md`, `.txt`, `.json`). | `node cli.js --cv C:\Users\Admin\Desktop\cv.md` |
-| `--pages <num>` | Số trang tuyển dụng muốn quét (Mặc định: 8 trang ~150 jobs). | `node cli.js --url https://thhoang.io.vn --pages 2` |
-| `--output <path>`| Nơi bạn muốn lưu file HTML kết quả. | `node cli.js --output ./bao_cao_viec_lam.html` |
-| `--help` | Xem danh sách hướng dẫn nhanh. | `node cli.js --help` |
-
----
-
-### 📊 Cách Đọc & Khai Thác Dashboard Kết Quả Hiệu Quả Nhất
-
-Khi mở file `dashboard.html`, bạn sẽ thấy:
-1. **Khung Hồ Sơ Ứng Viên (Trên cùng):** Xem lại AI đã bóc tách đúng những kỹ năng và số năm kinh nghiệm nào từ CV của bạn.
-2. **Khu Vực Spotlight (Top Khuyến Nghị):** 5 công việc có điểm tương thích cao nhất ($85\% - 100\%$). Đây là những tin bạn nên bấm nút **"Nộp Hồ Sơ Ngay"** đầu tiên.
-3. **Nhãn `DEV MATCH` (Viền xanh):** Chỉ xuất hiện ở các vị trí lập trình phần mềm thực thụ. Hãy bỏ qua các tin không có nhãn này nếu bạn không muốn làm IT Helpdesk hay bấm cáp mạng.
-4. **Bộ Lọc Nhanh:** Bấm vào tab `🎯 Đề Xuất Phù Hợp` để lọc ngay các việc có điểm số $\ge 70\%$, hoặc tab `💰 Lương >= 15 Triệu` để xem các vị trí thu nhập tốt.
+</details>
 
 ---
 
