@@ -108,3 +108,4 @@ class CareervietAdapter {
 }
 
 module.exports = CareervietAdapter;
+

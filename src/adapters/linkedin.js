@@ -99,3 +99,4 @@ class LinkedinAdapter {
 }
 
 module.exports = LinkedinAdapter;
+
