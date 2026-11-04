@@ -39,4 +39,4 @@ Cảm ơn bạn đã quan tâm đến việc đóng góp cho dự án **Job Scou
    - `docs: update readme with new adapter instructions`
 5. Push lên fork của bạn và mở **Pull Request** vào nhánh `main` của repo gốc.
 
-Mọi thắc mắc hãy mở [GitHub Discussion](https://github.com/thieuhoang2002/job-scout-vn/discussions) hoặc liên hệ qua email: **thhoang0903@gmail.com**.
+Mọi thắc mắc hãy mở [GitHub Discussion](https://github.com/thieuhoang2002/job-scout-vn/discussions) hoặc liên hệ qua email: **contact@thhoang.io.vn**.

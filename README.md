@@ -212,6 +212,6 @@ Nếu **Job Scout VN** giúp bạn tìm được công việc ưng ý hoặc ti�
 * **Thiều Việt Hoàng (Sky)** — *Software Engineer & Automation Specialist*
 * **Portfolio:** [thhoang.io.vn](https://thhoang.io.vn)
 * **GitHub:** [@thieuhoang2002](https://github.com/thieuhoang2002)
-* **Email:** thhoang0903@gmail.com
+* **Email:** contact@thhoang.io.vn
 
 ⭐ **Hãy để lại 1 Star trên GitHub nếu bạn thấy dự án này hữu ích!**

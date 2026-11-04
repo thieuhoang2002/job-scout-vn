@@ -26,4 +26,4 @@ Người quản trị dự án có quyền và trách nhiệm loại bỏ, chỉ
 
 ## Liên Hệ (Contact)
 
-Mọi báo cáo về hành vi vi phạm có thể được gửi trực tiếp tới tác giả qua email: **thhoang0903@gmail.com**. Mọi thông tin sẽ được giữ bí mật và xử lý công tâm.
+Mọi báo cáo về hành vi vi phạm có thể được gửi trực tiếp tới tác giả qua email: **contact@thhoang.io.vn**. Mọi thông tin sẽ được giữ bí mật và xử lý công tâm.

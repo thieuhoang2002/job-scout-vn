@@ -24,7 +24,7 @@ Chúng tôi hỗ trợ và cung cấp các bản vá bảo mật cho các phiên
 Nếu bạn phát hiện bất kỳ lỗ hổng bảo mật nào trong mã nguồn hoặc phương thức cào dữ liệu:
 
 1. **Vui lòng KHÔNG công khai lỗ hổng lên GitHub Issues.**
-2. Gửi email trực tiếp đến tác giả tại: **thhoang0903@gmail.com** với tiêu đề `[SECURITY VULNERABILITY] Job Scout VN`.
+2. Gửi email trực tiếp đến tác giả tại: **contact@thhoang.io.vn** với tiêu đề `[SECURITY VULNERABILITY] Job Scout VN`.
 3. Vui lòng cung cấp:
    - Mô tả chi tiết lỗ hổng.
    - Các bước tái hiện (Proof of Concept).
