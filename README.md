@@ -24,19 +24,17 @@ Khi tìm kiếm việc làm IT tại Việt Nam trên các trang tuyển dụng 
 
 ---
 
-## 🌐 Các Nền Tảng Hỗ Trợ & Khả Năng "Soi" Tuyển Dụng Uy Tín
+## 🌐 Các Nền Tảng Tuyển Dụng Đã Tích Hợp Thực Tế
 
-> [!IMPORTANT]
-> **Cam kết dữ liệu sạch (No Spam / No Scam):** `job-scout-vn` chủ động **loại bỏ các nền tảng có tiền lệ lộ lọt dữ liệu hoặc tin rác** (như TopCV). Chúng tôi chỉ tập trung vào các sàn tuyển dụng IT uy tín, có kiểm duyệt nghiêm ngặt đối với nhà tuyển dụng.
+> [!NOTE]
+> **Nguyên tắc phát triển trung thực:** Chúng tôi chỉ hiển thị những nền tảng đã được viết code hoàn chỉnh và chạy thực tế. Không quảng cáo những sàn chưa hoàn thiện.
 
-| Nền tảng | Phân khúc doanh nghiệp | Độ uy tín | Trạng thái kỹ thuật REA |
-| :--- | :--- | :---: | :--- |
-| **ITViec.com** | Công ty Product, Tech Startups, Offshore chất lượng cao. | ⭐⭐⭐⭐⭐ *(Ít nhưng chất)* | 🔄 **Ưu tiên số 1 v1.1** (Bóc tách internal API JSON) |
-| **LinkedIn Jobs** | Tập đoàn đa quốc gia (MNCs), Ngân hàng, Big Tech (Grab, Shopee, VNG, NAB...). | ⭐⭐⭐⭐⭐ *(Lương cao, minh bạch)* | 🔄 **Ưu tiên số 2 v1.1** (Bóc tách Guest Job Search API) |
-| **CareerViet.vn** *(CareerBuilder)* | Tập đoàn lớn, Doanh nghiệp FDI, Ngân hàng, Chế độ phúc lợi chuẩn chỉ. | ⭐⭐⭐⭐ *(Pháp lý quốc tế)* | 🔄 **Ưu tiên số 3 v1.1** (Bóc tách REST API / Search) |
-| **VietnamWorks** | Khối doanh nghiệp FDI, Tập đoàn lớn lâu năm. | ⭐⭐⭐⭐ *(Kiểm duyệt chặt)* | 📋 **Lộ trình v1.2** (Khai thác Algolia Search API ngầm) |
-| **TopDev.vn** | Nền tảng chuyên biệt cho lập trình viên và sự kiện Tech. | ⭐⭐⭐⭐ *(Chuẩn Dev)* | 📋 **Lộ trình v1.2** (Bóc tách REST API) |
-| **Vieclam24h.vn** | Doanh nghiệp sản xuất, SME truyền thống (Thích hợp cho Junior/Helpdesk). | ⭐⭐⭐ *(Cần lọc kỹ)* | ✅ **Sẵn sàng 100%** (Giải mã Next.js SSR `__NEXT_DATA__`) |
+| Nền tảng | Trạng thái thực tế | Kỹ thuật bóc tách REA |
+| :--- | :---: | :--- |
+| **ITViec.com** | ✅ **Sẵn sàng 100%** | Bóc tách trực tiếp danh sách việc làm Software Dev, Tech Startups, Outsource xịn tại TP.HCM. |
+| **Vieclam24h.vn** | ✅ **Sẵn sàng 100%** | Khai thác Next.js SSR `__NEXT_DATA__` (Cào hàng trăm việc làm trong 1.5s, không cần trình duyệt). |
+| **CareerViet.vn** *(CareerBuilder)* | 🔄 *Đang viết Adapter* | Khai thác endpoint tìm kiếm việc làm doanh nghiệp FDI & Ngân hàng. |
+| **LinkedIn Jobs** | 🔄 *Đang viết Adapter* | Khai thác Guest Search API không cần đăng nhập. |
 
 ---
 
@@ -57,8 +55,9 @@ flowchart TD
     Candidate["Ứng Viên (Portfolio URL hoặc File CV)"] --> Parser["1. Universal Profile Parser<br/>(REA Web Extractor)"]
     
     subgraph ScrapingLayer ["2. REA Zero-Browser Scraper"]
-        S1["Vieclam24h Adapter<br/>(Next.js SSR Extraction)"]
-        S2["ITViec / LinkedIn / CareerViet<br/>(Extensible Plugins)"]
+        S1["Vieclam24h Adapter (Đã chạy)"]
+        S2["ITViec Adapter (Đã chạy)"]
+        S3["CareerViet / LinkedIn (Đang hoàn thiện)"]
     end
     
     Parser --> MatchEngine["3. Compatibility Match Engine<br/>(Phân loại Dev vs Helpdesk & Chấm điểm 0-100)"]

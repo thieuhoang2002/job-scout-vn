@@ -1,17 +1,23 @@
 const Vieclam24hAdapter = require('./vieclam24h');
+const ItviecAdapter = require('./itviec');
 
 const adapters = {
-  vieclam24h: new Vieclam24hAdapter()
+  vieclam24h: new Vieclam24hAdapter(),
+  itviec: new ItviecAdapter()
 };
 
 async function fetchAllJobs(options = {}) {
-  const selectedSources = options.sources || ['vieclam24h'];
+  const selectedSources = options.sources || ['vieclam24h', 'itviec'];
   const allJobs = [];
 
   for (const src of selectedSources) {
     if (adapters[src]) {
-      const jobs = await adapters[src].fetchJobs(options);
-      allJobs.push(...jobs);
+      try {
+        const jobs = await adapters[src].fetchJobs(options);
+        allJobs.push(...jobs);
+      } catch (err) {
+        console.error(`Lỗi cào từ nguồn ${src}:`, err.message);
+      }
     }
   }
 
