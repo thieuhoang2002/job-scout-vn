@@ -2,7 +2,7 @@
 name: job-scout-vn
 description: >
   Personal AI Job Hunter & Market Reality Checker for Vietnamese Tech Talents.
-  Scans real-time IT jobs from Vietnamese recruitment portals (Vieclam24h, ITViec, TopCV),
+  Scans real-time IT jobs from trusted recruitment portals (ITViec, LinkedIn, Vieclam24h),
   analyzes candidate Portfolio/CV via REA techniques, scores compatibility (0-100),
   filters out misleading titles, and generates an interactive offline HTML dashboard.
 triggers:

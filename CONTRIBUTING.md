@@ -7,7 +7,7 @@ Cảm ơn bạn đã quan tâm đến việc đóng góp cho dự án **Job Scou
 ## 🛠️ Bạn Có Thể Đóng Góp Gì?
 
 1. **Phát triển thêm Adapter cho các sàn tuyển dụng mới (Ưu tiên số 1):**
-   - Viết adapter cho **ITViec, TopCV, VietnamWorks, TopDev, LinkedIn**.
+   - Viết adapter cho **ITViec, LinkedIn, VietnamWorks, TopDev**.
    - Tuân thủ **Giao thức REA (Reverse Engineering Analysis)**: Tận dụng các Next.js SSR payloads (`__NEXT_DATA__`), Nuxt.js payloads, hoặc các internal JSON API thay vì dùng trình duyệt Chromium nặng nề.
 2. **Cải tiến thuật toán Chấm Điểm Match Score (`src/engine/matcher.js`):**
    - Bổ sung bộ từ khóa nhận diện tech stack mới (AI, DevOps, Mobile, Rust, Go).

@@ -24,15 +24,18 @@ Khi tìm kiếm việc làm IT tại Việt Nam trên các trang tuyển dụng 
 
 ---
 
-## 🌐 Các Nền Tảng Hỗ Trợ & Khả Năng "Soi" Tuyển Dụng
+## 🌐 Các Nền Tảng Hỗ Trợ & Khả Năng "Soi" Tuyển Dụng Uy Tín
 
-| Nền tảng | Trạng thái | Kỹ thuật REA bóc tách ngầm |
-| :--- | :---: | :--- |
-| **Vieclam24h.vn** | ✅ **Sẵn sàng 100%** | Khai thác trực tiếp Next.js SSR `__NEXT_DATA__` (Cào 150 jobs trong 1.5s, không cần trình duyệt). |
-| **ITViec.com** | 🔄 *Đang tích hợp (Adapter v1.1)* | Bóc tách internal REST/GraphQL API & SSR state của ITViec. |
-| **TopCV.vn** | 🔄 *Đang tích hợp (Adapter v1.1)* | Phân tích API endpoint tìm việc và giải mã JSON payload. |
-| **TopDev.vn** | 📋 *Lộ trình v1.2* | Khai thác API danh sách tuyển dụng của TopDev. |
-| **Portfolio / CV cá nhân** | ✅ **Sẵn sàng 100%** | Bóc tách tự động mọi website Next.js App Router (RSC `self.__next_f.push`), JSON-LD Structured Data, hoặc file Markdown/Text/JSON CV. |
+> [!IMPORTANT]
+> **Cam kết dữ liệu sạch (No Spam / No Scam):** `job-scout-vn` chủ động **loại bỏ các nền tảng có tiền lệ lộ lọt dữ liệu hoặc tin rác** (như TopCV). Chúng tôi chỉ tập trung vào các sàn tuyển dụng IT uy tín, có kiểm duyệt nghiêm ngặt đối với nhà tuyển dụng.
+
+| Nền tảng | Phân khúc doanh nghiệp | Độ uy tín | Trạng thái kỹ thuật REA |
+| :--- | :--- | :---: | :--- |
+| **ITViec.com** | Công ty Product, Tech Startups, Offshore chất lượng cao. | ⭐⭐⭐⭐⭐ *(Ít nhưng chất)* | 🔄 **Ưu tiên số 1 v1.1** (Bóc tách internal API JSON) |
+| **LinkedIn Jobs** | Tập đoàn đa quốc gia (MNCs), Ngân hàng, Big Tech (Grab, Shopee, VNG, NAB...). | ⭐⭐⭐⭐⭐ *(Lương cao, minh bạch)* | 🔄 **Ưu tiên số 2 v1.1** (Bóc tách Guest Job Search API) |
+| **VietnamWorks** | Khối doanh nghiệp FDI, Tập đoàn lớn, Ngân hàng trong nước. | ⭐⭐⭐⭐ *(Kiểm duyệt chặt)* | 📋 **Lộ trình v1.2** (Khai thác Algolia Search API ngầm) |
+| **TopDev.vn** | Nền tảng chuyên biệt cho lập trình viên và sự kiện Tech. | ⭐⭐⭐⭐ *(Chuẩn Dev)* | 📋 **Lộ trình v1.2** (Bóc tách REST API) |
+| **Vieclam24h.vn** | Doanh nghiệp sản xuất, SME truyền thống (Thích hợp cho Junior/Helpdesk). | ⭐⭐⭐ *(Cần lọc kỹ)* | ✅ **Sẵn sàng 100%** (Giải mã Next.js SSR `__NEXT_DATA__`) |
 
 ---
 
