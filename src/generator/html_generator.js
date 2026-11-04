@@ -3,7 +3,7 @@ const path = require('path');
 
 /**
  * Standalone HTML Dashboard Generator
- * Embeds all matched job data, analytics charts, and candidate profile
+ * Embeds all matched job data, multi-platform analytics, and candidate profile
  * into a single interactive HTML file requiring zero backend server.
  */
 class HtmlGenerator {
@@ -14,9 +14,28 @@ class HtmlGenerator {
     const salary25to40 = matchedJobs.filter(m => m.job.salary_max > 25000000).length;
     const salaryNegotiable = matchedJobs.filter(m => m.job.salary_min === 0 && m.job.salary_max === 0).length;
 
+    // Platform breakdown stats
+    const itviecCount = matchedJobs.filter(m => m.job.source === 'itviec.com').length;
+    const linkedinCount = matchedJobs.filter(m => m.job.source === 'linkedin.com').length;
+    const careervietCount = matchedJobs.filter(m => m.job.source === 'careerviet.vn').length;
+    const vieclam24hCount = matchedJobs.filter(m => m.job.source === 'vieclam24h.vn').length;
+
     const skillsHtml = (profile.skills || []).map(s => 
       `<span class="px-2.5 py-1 rounded-lg bg-slate-800 border border-slate-700 text-slate-200 text-xs">${s}</span>`
     ).join(' ');
+
+    function getPlatformBadge(source) {
+      if (source === 'itviec.com') {
+        return '<span class="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded bg-red-50 text-red-700 border border-red-200">🔴 ITViec</span>';
+      }
+      if (source === 'linkedin.com') {
+        return '<span class="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded bg-sky-50 text-sky-700 border border-sky-200">🔵 LinkedIn</span>';
+      }
+      if (source === 'careerviet.vn') {
+        return '<span class="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded bg-amber-50 text-amber-800 border border-amber-200">🟠 CareerViet</span>';
+      }
+      return '<span class="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded bg-indigo-50 text-indigo-700 border border-indigo-200">🟣 ViệcLàm24h</span>';
+    }
 
     const spotlightHtml = (spotlightJobs || []).map((item, idx) => {
       const j = item.job;
@@ -27,7 +46,10 @@ class HtmlGenerator {
           </div>
           <div class="space-y-3">
             <div class="pr-14">
-              <span class="text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded">#${idx + 1} Ưu tiên nộp</span>
+              <div class="flex items-center gap-2 mb-1">
+                <span class="text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded">#${idx + 1} Ưu tiên nộp</span>
+                ${getPlatformBadge(j.source)}
+              </div>
               <h3 class="text-base font-bold text-slate-900 mt-1 line-clamp-1">${j.title}</h3>
               <p class="text-xs text-slate-600 font-medium truncate">${j.company}</p>
             </div>
@@ -62,7 +84,7 @@ class HtmlGenerator {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Báo Cáo Phân Tích Cơ Hội Việc Làm IT | Job Scout VN</title>
+  <title>Báo Cáo Phân Tích Việc Làm IT Đa Sàn | Job Scout VN</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -85,10 +107,10 @@ class HtmlGenerator {
         </div>
         <div>
           <div class="flex items-center gap-2">
-            <h1 class="text-lg font-bold text-slate-900 leading-tight">Job Scout VN</h1>
-            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-100 text-blue-700">REA Powered</span>
+            <h1 class="text-lg font-bold text-slate-900 leading-tight">Job Scout VN — Radar Việc Làm Đa Sàn</h1>
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-100 text-blue-700">4 Sàn Tuyển Dụng</span>
           </div>
-          <p class="text-xs text-slate-500">Phân tích thực tế thị trường việc làm IT & Tự động đối chiếu năng lực ứng viên</p>
+          <p class="text-xs text-slate-500">Quét đồng thời từ ITViec, LinkedIn, CareerViet & ViệcLàm24h</p>
         </div>
       </div>
       <div class="flex items-center gap-2">
@@ -97,7 +119,7 @@ class HtmlGenerator {
           Đã quét ${matchedJobs.length} Việc Làm
         </span>
         <a href="#job-list" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white transition shadow-sm">
-          Xem Danh Sách Jobs
+          Khám Phá Jobs
         </a>
       </div>
     </div>
@@ -134,6 +156,73 @@ class HtmlGenerator {
       </div>
     </section>
 
+    <!-- PLATFORM ANALYSIS METRICS -->
+    <section class="space-y-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-2.5 py-1 rounded border border-blue-200">
+            🌐 Phân Tích Đa Nền Tảng
+          </span>
+          <h2 class="text-xl font-extrabold text-slate-900 mt-1">Cơ Cấu Việc Làm Theo Từng Sàn Tuyển Dụng</h2>
+          <p class="text-xs text-slate-500">So sánh nguồn việc và đặc thù tuyển dụng giữa các cổng thông tin</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- ITViec -->
+        <div class="bg-white p-5 rounded-2xl border border-red-100 shadow-sm hover:shadow-md transition bg-gradient-to-br from-red-50/30 to-transparent">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-red-600 uppercase tracking-wider">ITViec.com</span>
+            <span class="text-[10px] font-bold bg-red-100 text-red-700 px-2 py-0.5 rounded">Product & Startups</span>
+          </div>
+          <div class="mt-2 flex items-baseline gap-2">
+            <span class="text-3xl font-extrabold text-red-600">${itviecCount}</span>
+            <span class="text-xs text-slate-500">jobs quét được</span>
+          </div>
+          <p class="text-xs text-slate-500 mt-2 leading-relaxed">100% công việc lập trình chuyên sâu, kiểm duyệt công ty nghiêm ngặt.</p>
+        </div>
+
+        <!-- LinkedIn -->
+        <div class="bg-white p-5 rounded-2xl border border-sky-100 shadow-sm hover:shadow-md transition bg-gradient-to-br from-sky-50/30 to-transparent">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-sky-700 uppercase tracking-wider">LinkedIn Jobs</span>
+            <span class="text-[10px] font-bold bg-sky-100 text-sky-800 px-2 py-0.5 rounded">MNCs & Big Tech</span>
+          </div>
+          <div class="mt-2 flex items-baseline gap-2">
+            <span class="text-3xl font-extrabold text-sky-600">${linkedinCount}</span>
+            <span class="text-xs text-slate-500">jobs quét được</span>
+          </div>
+          <p class="text-xs text-slate-500 mt-2 leading-relaxed">Tập đoàn đa quốc gia, môi trường tiếng Anh, mức lương cạnh tranh/USD.</p>
+        </div>
+
+        <!-- CareerViet -->
+        <div class="bg-white p-5 rounded-2xl border border-amber-100 shadow-sm hover:shadow-md transition bg-gradient-to-br from-amber-50/30 to-transparent">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-amber-700 uppercase tracking-wider">CareerViet.vn</span>
+            <span class="text-[10px] font-bold bg-amber-100 text-amber-800 px-2 py-0.5 rounded">Ngân hàng & FDI</span>
+          </div>
+          <div class="mt-2 flex items-baseline gap-2">
+            <span class="text-3xl font-extrabold text-amber-600">${careervietCount}</span>
+            <span class="text-xs text-slate-500">jobs quét được</span>
+          </div>
+          <p class="text-xs text-slate-500 mt-2 leading-relaxed">Khối ngân hàng, tập đoàn tài chính, doanh nghiệp FDI chế độ phúc lợi cao.</p>
+        </div>
+
+        <!-- Vieclam24h -->
+        <div class="bg-white p-5 rounded-2xl border border-indigo-100 shadow-sm hover:shadow-md transition bg-gradient-to-br from-indigo-50/30 to-transparent">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-indigo-700 uppercase tracking-wider">Vieclam24h.vn</span>
+            <span class="text-[10px] font-bold bg-indigo-100 text-indigo-800 px-2 py-0.5 rounded">SME & Doanh Nghiệp</span>
+          </div>
+          <div class="mt-2 flex items-baseline gap-2">
+            <span class="text-3xl font-extrabold text-indigo-600">${vieclam24hCount}</span>
+            <span class="text-xs text-slate-500">jobs quét được</span>
+          </div>
+          <p class="text-xs text-slate-500 mt-2 leading-relaxed">Doanh nghiệp sản xuất, bán lẻ và các vị trí Junior/Helpdesk nội địa.</p>
+        </div>
+      </div>
+    </section>
+
     <!-- SPOTLIGHT TOP MATCHES -->
     <section class="space-y-4">
       <div>
@@ -141,7 +230,7 @@ class HtmlGenerator {
           🎯 Top Khuyến Nghị
         </span>
         <h2 class="text-xl font-extrabold text-slate-900 mt-1">Các Vị Trí Có Tỷ Lệ Đậu Cao Nhất</h2>
-        <p class="text-xs text-slate-500">Dựa trên ma trận chấm điểm độ tương thích giữa Profile ứng viên và yêu cầu JD</p>
+        <p class="text-xs text-slate-500">Được chấm điểm tương thích kết hợp giữa 4 sàn tuyển dụng lớn</p>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         ${spotlightHtml}
@@ -149,24 +238,29 @@ class HtmlGenerator {
     </section>
 
     <!-- CHARTS -->
-    <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
       <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-        <h3 class="text-base font-bold text-slate-900 mb-1">Phân Bổ Dải Lương Tuyển Dụng</h3>
-        <p class="text-xs text-slate-500 mb-4">Mức thu nhập tháng theo số lượng tin tuyển dụng</p>
+        <h3 class="text-base font-bold text-slate-900 mb-1">Phân Bổ Dải Lương</h3>
+        <p class="text-xs text-slate-500 mb-4">Mức thu nhập tháng theo các sàn</p>
         <div class="h-64"><canvas id="salaryChart"></canvas></div>
       </div>
       <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-        <h3 class="text-base font-bold text-slate-900 mb-1">Cơ Cấu Vị Trí Thực Tế Thị Trường</h3>
-        <p class="text-xs text-slate-500 mb-4">Tỷ lệ phân hóa giữa Dev phần mềm và Helpdesk/Kỹ thuật</p>
+        <h3 class="text-base font-bold text-slate-900 mb-1">Thị Phần Theo Nền Tảng</h3>
+        <p class="text-xs text-slate-500 mb-4">Tỷ lệ số lượng công việc giữa các sàn</p>
+        <div class="h-64"><canvas id="platformChart"></canvas></div>
+      </div>
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+        <h3 class="text-base font-bold text-slate-900 mb-1">Cơ Cấu Vị Trí Thực Tế</h3>
+        <p class="text-xs text-slate-500 mb-4">Phân hóa Dev vs Helpdesk & Data</p>
         <div class="h-64"><canvas id="categoryChart"></canvas></div>
       </div>
     </section>
 
-    <!-- ALL JOBS LIST -->
+    <!-- ALL JOBS LIST WITH PLATFORM FILTERS -->
     <section id="job-list" class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-6">
       <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-100">
         <div>
-          <h2 class="text-xl font-bold text-slate-900">Danh Sách Toàn Bộ Việc Làm Đã Quét</h2>
+          <h2 class="text-xl font-bold text-slate-900">Danh Sách Toàn Bộ Việc Làm</h2>
           <p class="text-xs text-slate-500" id="resultCount">Hiển thị ${matchedJobs.length} công việc</p>
         </div>
         <div class="w-full md:w-80 relative">
@@ -175,12 +269,26 @@ class HtmlGenerator {
         </div>
       </div>
 
-      <div class="flex flex-wrap gap-2 items-center text-xs">
-        <span class="text-slate-400 font-medium mr-1">Lọc nhanh:</span>
-        <button onclick="setFilter('topMatch')" class="filter-btn px-3 py-1.5 rounded-lg font-bold bg-amber-500 text-white shadow-sm" data-filter="topMatch">🎯 Đề Xuất Phù Hợp (${stats.high_match_count || 0})</button>
-        <button onclick="setFilter('dev')" class="filter-btn px-3 py-1.5 rounded-lg font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200" data-filter="dev">⭐ Việc Dev / Lập trình (${stats.dev_count || 0})</button>
-        <button onclick="setFilter('all')" class="filter-btn px-3 py-1.5 rounded-lg font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200" data-filter="all">Tất cả (${matchedJobs.length})</button>
-        <button onclick="setFilter('highSalary')" class="filter-btn px-3 py-1.5 rounded-lg font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200" data-filter="highSalary">💰 Lương >= 15 Triệu</button>
+      <!-- FILTER BUTTONS -->
+      <div class="space-y-3">
+        <!-- Row 1: Filter by Platform -->
+        <div class="flex flex-wrap gap-2 items-center text-xs">
+          <span class="text-slate-400 font-semibold mr-1">Lọc theo sàn:</span>
+          <button onclick="setPlatformFilter('all')" class="platform-filter-btn px-3 py-1.5 rounded-lg font-bold bg-slate-900 text-white shadow-sm" data-platform="all">🌐 Tất cả sàn (${matchedJobs.length})</button>
+          <button onclick="setPlatformFilter('itviec.com')" class="platform-filter-btn px-3 py-1.5 rounded-lg font-semibold bg-red-50 text-red-700 border border-red-200 hover:bg-red-100" data-platform="itviec.com">🔴 ITViec (${itviecCount})</button>
+          <button onclick="setPlatformFilter('linkedin.com')" class="platform-filter-btn px-3 py-1.5 rounded-lg font-semibold bg-sky-50 text-sky-700 border border-sky-200 hover:bg-sky-100" data-platform="linkedin.com">🔵 LinkedIn (${linkedinCount})</button>
+          <button onclick="setPlatformFilter('careerviet.vn')" class="platform-filter-btn px-3 py-1.5 rounded-lg font-semibold bg-amber-50 text-amber-800 border border-amber-200 hover:bg-amber-100" data-platform="careerviet.vn">🟠 CareerViet (${careervietCount})</button>
+          <button onclick="setPlatformFilter('vieclam24h.vn')" class="platform-filter-btn px-3 py-1.5 rounded-lg font-semibold bg-indigo-50 text-indigo-700 border border-indigo-200 hover:bg-indigo-100" data-platform="vieclam24h.vn">🟣 ViệcLàm24h (${vieclam24hCount})</button>
+        </div>
+
+        <!-- Row 2: Filter by Criteria -->
+        <div class="flex flex-wrap gap-2 items-center text-xs pt-2 border-t border-slate-100">
+          <span class="text-slate-400 font-semibold mr-1">Tiêu chí:</span>
+          <button onclick="setCriteriaFilter('topMatch')" class="criteria-filter-btn px-3 py-1.5 rounded-lg font-bold bg-amber-500 text-white shadow-sm" data-criteria="topMatch">🎯 Đề Xuất Phù Hợp (${stats.high_match_count || 0})</button>
+          <button onclick="setCriteriaFilter('dev')" class="criteria-filter-btn px-3 py-1.5 rounded-lg font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200" data-criteria="dev">⭐ Việc Dev / Lập trình (${stats.dev_count || 0})</button>
+          <button onclick="setCriteriaFilter('all')" class="criteria-filter-btn px-3 py-1.5 rounded-lg font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200" data-criteria="all">Tất cả</button>
+          <button onclick="setCriteriaFilter('highSalary')" class="criteria-filter-btn px-3 py-1.5 rounded-lg font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200" data-criteria="highSalary">💰 Lương >= 15 Triệu</button>
+        </div>
       </div>
 
       <div id="jobsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
@@ -205,20 +313,40 @@ class HtmlGenerator {
       options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
     });
 
+    new Chart(document.getElementById('platformChart').getContext('2d'), {
+      type: 'doughnut',
+      data: {
+        labels: ['ITViec', 'LinkedIn', 'CareerViet', 'ViệcLàm24h'],
+        datasets: [{
+          data: [${itviecCount}, ${linkedinCount}, ${careervietCount}, ${vieclam24hCount}],
+          backgroundColor: ['#ef4444', '#0284c7', '#f59e0b', '#6366f1']
+        }]
+      },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+    });
+
     new Chart(document.getElementById('categoryChart').getContext('2d'), {
       type: 'doughnut',
       data: {
-        labels: ['IT Helpdesk / Mạng', 'Lập trình / Dev', 'Sales IT', 'Data / AI / BA', 'Khác'],
+        labels: ['Lập trình / Dev', 'IT Helpdesk', 'Data / AI / BA', 'Khác'],
         datasets: [{
-          data: [${stats.helpdesk_count || 0}, ${stats.dev_count || 0}, ${stats.sales_count || 0}, ${stats.data_count || 0}, 15],
-          backgroundColor: ['#f59e0b', '#2563eb', '#8b5cf6', '#06b6d4', '#94a3b8']
+          data: [${stats.dev_count || 0}, ${stats.helpdesk_count || 0}, ${stats.data_count || 0}, 15],
+          backgroundColor: ['#2563eb', '#f59e0b', '#06b6d4', '#94a3b8']
         }]
       },
-      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right' } } }
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
     });
 
-    let currentFilter = 'topMatch';
+    let currentPlatform = 'all';
+    let currentCriteria = 'topMatch';
     let searchQuery = '';
+
+    function getPlatformBadge(source) {
+      if (source === 'itviec.com') return '<span class=\"inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded bg-red-50 text-red-700 border border-red-200\">🔴 ITViec</span>';
+      if (source === 'linkedin.com') return '<span class=\"inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded bg-sky-50 text-sky-700 border border-sky-200\">🔵 LinkedIn</span>';
+      if (source === 'careerviet.vn') return '<span class=\"inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded bg-amber-50 text-amber-800 border border-amber-200\">🟠 CareerViet</span>';
+      return '<span class=\"inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded bg-indigo-50 text-indigo-700 border border-indigo-200\">🟣 ViệcLàm24h</span>';
+    }
 
     function renderJobs() {
       const container = document.getElementById('jobsContainer');
@@ -226,15 +354,19 @@ class HtmlGenerator {
 
       let filtered = matchedData.filter(item => {
         const j = item.job;
-        if (currentFilter === 'topMatch' && item.score < 70) return false;
-        if (currentFilter === 'dev' && !j.is_dev) return false;
-        if (currentFilter === 'highSalary' && j.salary_max < 15000000 && j.salary_min < 15000000) return false;
+        // Platform filter
+        if (currentPlatform !== 'all' && j.source !== currentPlatform) return false;
+
+        // Criteria filter
+        if (currentCriteria === 'topMatch' && item.score < 70) return false;
+        if (currentCriteria === 'dev' && !j.is_dev) return false;
+        if (currentCriteria === 'highSalary' && j.salary_max < 15000000 && j.salary_min < 15000000) return false;
 
         if (searchQuery.trim() !== '') {
           const q = searchQuery.toLowerCase();
           const match = j.title.toLowerCase().includes(q) ||
                         j.company.toLowerCase().includes(q) ||
-                        j.tags.some(t => t.toLowerCase().includes(q)) ||
+                        (j.tags && j.tags.some(t => t.toLowerCase().includes(q))) ||
                         j.location.toLowerCase().includes(q);
           if (!match) return false;
         }
@@ -244,7 +376,7 @@ class HtmlGenerator {
       countEl.innerText = 'Hiển thị ' + filtered.length + ' / ' + matchedData.length + ' công việc';
 
       if (filtered.length === 0) {
-        container.innerHTML = '<div class="col-span-full py-12 text-center text-slate-400 font-semibold">Không tìm thấy công việc nào phù hợp</div>';
+        container.innerHTML = '<div class="col-span-full py-12 text-center text-slate-400 font-semibold">Không tìm thấy công việc nào phù hợp với bộ lọc hiện tại</div>';
         return;
       }
 
@@ -262,6 +394,7 @@ class HtmlGenerator {
               <div class="flex items-start gap-3">
                 <div class="flex-1 min-w-0">
                   <div class="flex items-center gap-1.5 mb-1 flex-wrap">
+                    \${getPlatformBadge(j.source)}
                     \${scoreBadge}
                     <span class="inline-block text-[10px] font-semibold px-2 py-0.5 rounded border \${isDev ? 'bg-blue-50 text-blue-700 border-blue-200' : 'bg-slate-100 text-slate-700 border-slate-200'}">\${j.category}</span>
                   </div>
@@ -286,13 +419,29 @@ class HtmlGenerator {
       }).join('');
     }
 
-    function setFilter(filterType) {
-      currentFilter = filterType;
-      document.querySelectorAll('.filter-btn').forEach(btn => {
-        if (btn.dataset.filter === filterType) {
-          btn.className = 'filter-btn px-3 py-1.5 rounded-lg font-bold bg-amber-500 text-white shadow-sm';
+    function setPlatformFilter(platform) {
+      currentPlatform = platform;
+      document.querySelectorAll('.platform-filter-btn').forEach(btn => {
+        if (btn.dataset.platform === platform) {
+          btn.className = 'platform-filter-btn px-3 py-1.5 rounded-lg font-bold bg-slate-900 text-white shadow-sm';
         } else {
-          btn.className = 'filter-btn px-3 py-1.5 rounded-lg font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200';
+          btn.className = 'platform-filter-btn px-3 py-1.5 rounded-lg font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200';
+        }
+      });
+      renderJobs();
+    }
+
+    function setCriteriaFilter(criteria) {
+      currentCriteria = criteria;
+      document.querySelectorAll('.criteria-filter-btn').forEach(btn => {
+        if (btn.dataset.criteria === criteria) {
+          if (criteria === 'topMatch') {
+            btn.className = 'criteria-filter-btn px-3 py-1.5 rounded-lg font-bold bg-amber-500 text-white shadow-sm';
+          } else {
+            btn.className = 'criteria-filter-btn px-3 py-1.5 rounded-lg font-semibold bg-slate-900 text-white shadow-sm';
+          }
+        } else {
+          btn.className = 'criteria-filter-btn px-3 py-1.5 rounded-lg font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200';
         }
       });
       renderJobs();
