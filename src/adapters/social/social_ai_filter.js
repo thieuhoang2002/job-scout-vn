@@ -265,14 +265,18 @@ class SocialAiFilter {
       ageDisplay = 'Dưới 1 giờ trước';
     }
 
+    const isFb = platform === 'facebook';
+    const sourceName = isFb ? 'facebook.com' : 'threads.net';
+    const sourceLabel = isFb ? (post.group_name || 'Facebook Group') : 'Threads';
+
     return {
       valid: true,
       job: {
-        id: post.id || `threads_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
-        source: 'threads.net',
-        source_label: 'Threads',
+        id: post.id || `${platform}_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
+        source: sourceName,
+        source_label: sourceLabel,
         title: cleanTitle,
-        company: post.author || 'Threads Recruiter',
+        company: post.author || post.group_name || (isFb ? 'Cộng đồng IT VN' : 'Threads Recruiter'),
         logo: '',
         category: isDev ? 'Lập trình / Dev' : 'Data / AI / BA / QA',
         salary_text: salary.text,
@@ -281,14 +285,14 @@ class SocialAiFilter {
         experience: post.experience || '1 - 3 năm (Thỏa thuận)',
         tags: tags.length > 0 ? tags : ['Software Engineer', 'Verified Post'],
         location: location,
-        url: post.url || 'https://www.threads.net',
+        url: post.url || (isFb ? 'https://www.facebook.com' : 'https://www.threads.net'),
         is_dev: isDev,
         created_at: post.created_at || new Date().toISOString(),
         age_display: ageDisplay,
         age_hours: ageHours,
         contact_info: contact,
         is_social: true,
-        platform_type: 'threads'
+        platform_type: platform
       }
     };
   }

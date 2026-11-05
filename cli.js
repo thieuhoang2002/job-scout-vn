@@ -11,29 +11,32 @@ function printHelp() {
   console.log(`
 🎯 Job Scout VN - Personal AI Job Hunter & Reality Checker
 =============================================================
-Hỗ trợ 5 nền tảng (100% Zero-Login, không cần đăng nhập):
-  🔴 ITViec.com         (Product & Startups)
-  🔵 LinkedIn Jobs      (MNCs & Big Tech - Cổng Guest Search)
-  🟠 CareerViet.vn      (Ngân hàng & Tập đoàn FDI)
-  🟣 ViệcLàm24h.vn      (SME & Doanh nghiệp nội địa qua SSR)
-  🧵 Threads (Meta)     (Kỹ sư & Tech Lead tuyển dụng < 72h)
+Hỗ trợ 5 nền tảng Zero-Login (Mặc định) + 1 Cổng Facebook Targeted (Ải đầu tiên):
+  🔴 ITViec.com         (Product & Startups - Zero-Login)
+  🔵 LinkedIn Jobs      (MNCs & Big Tech - Zero-Login Guest Search)
+  🟠 CareerViet.vn      (Ngân hàng & Tập đoàn FDI - Zero-Login)
+  🟣 ViệcLàm24h.vn      (SME & Doanh nghiệp nội địa - Zero-Login)
+  🧵 Threads (Meta)     (Kỹ sư & Tech Lead tuyển dụng < 72h - Zero-Login)
+  📘 Facebook Groups    (Chỉ định nhóm cụ thể, Profile riêng, Fail-Fast)
 
 Sử dụng:
   node cli.js [options]
 
 Các tùy chọn:
-  --url <url>        Đường dẫn website Portfolio của ứng viên (ví dụ: https://thhoang.io.vn)
-  --cv <file>        Đường dẫn file CV (.md, .txt, .json)
-  --sources <list>   Danh sách nền tảng quét (mặc định: vieclam24h,itviec,careerviet,linkedin,threads)
-  --pages <number>   Số trang cần quét trên các sàn lớn (mặc định: 6 trang)
-  --output <file>    Đường dẫn file HTML xuất ra (mặc định: ./output/dashboard.html)
-  --help             Hiển thị hướng dẫn này
+  --url <url>           Đường dẫn website Portfolio của ứng viên (ví dụ: https://thhoang.io.vn)
+  --cv <file>           Đường dẫn file CV (.md, .txt, .json)
+  --sources <list>      Danh sách nền tảng quét (mặc định: vieclam24h,itviec,careerviet,linkedin,threads)
+  --fb-groups <urls>    Danh sách link Group Facebook mục tiêu (cách nhau bởi dấu phẩy)
+  --pages <number>      Số trang cần quét trên các sàn lớn (mặc định: 6 trang)
+  --output <file>       Đường dẫn file HTML xuất ra (mặc định: ./output/dashboard.html)
+  --help                Hiển thị hướng dẫn này
 
 Ví dụ:
+  # 1. Quét nhanh 5 nguồn Zero-Login:
   node cli.js --url https://thhoang.io.vn
-  node cli.js --cv ./examples/test_cv_frontend.md
-  node cli.js --cv ./examples/test_cv_backend.md
-  node cli.js --sources itviec,linkedin --url https://thhoang.io.vn
+
+  # 2. Quét chuyên biệt có Facebook (Facebook First):
+  node cli.js --url https://thhoang.io.vn --sources facebook,itviec,linkedin --fb-groups "https://facebook.com/groups/nodejsvietnam"
 `);
 }
 
@@ -48,6 +51,7 @@ async function main() {
   let profileInput = null;
   let maxPages = 6;
   let selectedSources = null;
+  let facebookGroups = [];
   let outputPath = path.join(__dirname, 'output', 'dashboard.html');
 
   for (let i = 0; i < args.length; i++) {
@@ -62,6 +66,9 @@ async function main() {
       i++;
     } else if (args[i] === '--sources' && args[i + 1]) {
       selectedSources = args[i + 1].split(',').map(s => s.trim().toLowerCase());
+      i++;
+    } else if (args[i] === '--fb-groups' && args[i + 1]) {
+      facebookGroups = args[i + 1].split(',').map(s => s.trim());
       i++;
     } else if (args[i] === '--output' && args[i + 1]) {
       outputPath = path.resolve(args[i + 1]);
@@ -86,12 +93,20 @@ async function main() {
     process.exit(1);
   }
 
-  console.log(`\n📡 [2/4] Đang quét thị trường việc làm (5 nền tảng Zero-Login: ITViec, LinkedIn, CareerViet, ViệcLàm24h, Threads)...`);
-  const jobs = await fetchAllJobs({
-    maxPages,
-    sources: selectedSources,
-    onProgress: (msg) => console.log(`   ${msg}`)
-  });
+  console.log(`\n📡 [2/4] Đang quét thị trường việc làm (Áp dụng chiến lược Fail-Fast)...`);
+  let jobs = [];
+  try {
+    jobs = await fetchAllJobs({
+      maxPages,
+      sources: selectedSources,
+      facebookGroups,
+      onProgress: (msg) => console.log(`   ${msg}`)
+    });
+  } catch (err) {
+    console.error(`\n❌ Quá trình quét dữ liệu dừng lại: ${err.message}`);
+    process.exit(1);
+  }
+
   console.log(`✅ Đã quét thành công ${jobs.length} công việc thực tế.`);
 
   console.log('\n🧠 [3/4] Đang chấm điểm tương thích & lọc đề xuất...');

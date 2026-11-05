@@ -32,13 +32,17 @@ Khi tiếp nhận yêu cầu, AI chủ động nhận diện hoàn cảnh của 
 1. ⚡ **Chế độ Siêu Tốc (Mặc định — 5 Nguồn Zero-Login):**
    - Quét đồng thời ITViec, LinkedIn, CareerViet, ViệcLàm24h & Threads.
    - Lệnh: `node cli.js --url <URL>` hoặc `node cli.js --cv <CV_PATH>`
-2. 🌐 **Chế độ Công Ty Đa Quốc Gia & Remote:**
+2. 📘 **Chế độ Facebook Targeted (Fail-Fast & Group Kín Chỉ Định):**
+   - Người dùng yêu cầu quét Facebook: Bắt buộc cung cấp URL Group mục tiêu.
+   - Luồng chạy: **Ải Facebook thực thi đầu tiên** với Chrome profile riêng (`~/.job-scout-vn/browser_profile`). Nếu chưa login, mở Chrome đợi login; nếu không thành công, dừng tiến trình ngay lập tức.
+   - Lệnh: `node cli.js --url <URL> --sources facebook,itviec,linkedin --fb-groups "<GROUP_URLS>"`
+3. 🌐 **Chế độ Công Ty Đa Quốc Gia & Remote:**
    - Người dùng yêu cầu môi trường tiếng Anh, MNCs, lương USD.
    - Lệnh: `node cli.js --sources itviec,linkedin --url <URL>`
-3. 🧵 **Chế độ Tin Tuyển Nóng Hổi Từ Kỹ Sư Trên Threads (< 72 Giờ):**
+4. 🧵 **Chế độ Tin Tuyển Nóng Hổi Từ Kỹ Sư Trên Threads (< 72 Giờ):**
    - Người dùng muốn kết nối trực tiếp với các Tech Lead / HR đăng bài tuyển dụng trên Threads.
    - Lệnh: `node cli.js --sources threads --url <URL>`
-4. 🎓 **Chế độ Junior / Fresher (Lọc Bẫy Helpdesk):**
+5. 🎓 **Chế độ Junior / Fresher (Lọc Bẫy Helpdesk):**
    - Người dùng mới ra trường, chuyển ngành.
    - Thuật toán tự động siết chặt tiêu chuẩn DEV MATCH, loại bỏ 100% công việc cài Win, bấm cáp mạng.
 

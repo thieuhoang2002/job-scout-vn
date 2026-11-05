@@ -20,6 +20,7 @@ class HtmlGenerator {
     const careervietCount = matchedJobs.filter(m => m.job.source === 'careerviet.vn').length;
     const vieclam24hCount = matchedJobs.filter(m => m.job.source === 'vieclam24h.vn').length;
     const threadsCount = matchedJobs.filter(m => m.job.source === 'threads.net').length;
+    const facebookCount = matchedJobs.filter(m => m.job.source === 'facebook.com').length;
 
     const skillsHtml = (profile.skills || []).map(s => 
       `<span class="px-2.5 py-1 rounded-lg bg-slate-800 border border-slate-700 text-slate-200 text-xs">${s}</span>`
@@ -34,6 +35,9 @@ class HtmlGenerator {
       }
       if (source === 'careerviet.vn') {
         return '<span class="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded bg-amber-50 text-amber-800 border border-amber-200">🟠 CareerViet</span>';
+      }
+      if (source === 'facebook.com') {
+        return '<span class="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200">📘 FB Group</span>';
       }
       if (source === 'threads.net') {
         return '<span class="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded bg-zinc-900 text-white border border-zinc-700">🧵 Threads</span>';
@@ -303,6 +307,7 @@ class HtmlGenerator {
           <button onclick="setPlatformFilter('careerviet.vn')" class="platform-filter-btn px-3 py-1.5 rounded-lg font-semibold bg-amber-50 text-amber-800 border border-amber-200 hover:bg-amber-100" data-platform="careerviet.vn">🟠 CareerViet (${careervietCount})</button>
           <button onclick="setPlatformFilter('vieclam24h.vn')" class="platform-filter-btn px-3 py-1.5 rounded-lg font-semibold bg-indigo-50 text-indigo-700 border border-indigo-200 hover:bg-indigo-100" data-platform="vieclam24h.vn">🟣 ViệcLàm24h (${vieclam24hCount})</button>
           <button onclick="setPlatformFilter('threads.net')" class="platform-filter-btn px-3 py-1.5 rounded-lg font-semibold bg-zinc-100 text-zinc-900 border border-zinc-300 hover:bg-zinc-200" data-platform="threads.net">🧵 Threads (${threadsCount})</button>
+          ${facebookCount > 0 ? `<button onclick="setPlatformFilter('facebook.com')" class="platform-filter-btn px-3 py-1.5 rounded-lg font-semibold bg-blue-50 text-blue-700 border border-blue-200 hover:bg-blue-100" data-platform="facebook.com">📘 FB Group (${facebookCount})</button>` : ''}
         </div>
 
         <!-- Row 2: Filter by Criteria -->
@@ -371,6 +376,7 @@ class HtmlGenerator {
       if (source === 'linkedin.com') return '<span class="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded bg-sky-50 text-sky-700 border border-sky-200">🔵 LinkedIn</span>';
       if (source === 'careerviet.vn') return '<span class="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded bg-amber-50 text-amber-800 border border-amber-200">🟠 CareerViet</span>';
       if (source === 'threads.net') return '<span class="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded bg-zinc-900 text-white border border-zinc-700">🧵 Threads</span>';
+      if (source === 'facebook.com') return '<span class="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200">📘 FB Group</span>';
       return '<span class="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded bg-indigo-50 text-indigo-700 border border-indigo-200">🟣 ViệcLàm24h</span>';
     }
 
