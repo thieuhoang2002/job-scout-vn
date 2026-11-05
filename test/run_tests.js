@@ -5,22 +5,22 @@ const ProfileParser = require('../src/parsers/profile_parser');
 const HtmlGenerator = require('../src/generator/html_generator');
 
 async function runTestSuite() {
-  console.log('🧪 [Job Scout VN] Khởi chạy bộ kiểm thử toàn diện...\n');
+  console.log('🧪 [Job Scout VN] Khởi chạy bộ kiểm thử toàn diện (5 Nền tảng Zero-Login)...\n');
   let passed = 0;
 
-  // 1. Social Filter: Age Check
+  // 1. Social Filter: Age Check (< 72h on Threads)
   const filter = new SocialAiFilter();
   const freshPost = { text: '[Tuyển] React Developer lương 20M, mail: hr@test.vn', time: '5 giờ trước' };
   const oldPost = { text: '[Tuyển] Java Developer lương 30M, mail: hr@test.vn', time: '4 ngày trước' };
-  assert.strictEqual(filter.filterAndNormalize(freshPost, 'facebook').valid, true);
-  assert.strictEqual(filter.filterAndNormalize(oldPost, 'facebook').valid, false);
+  assert.strictEqual(filter.filterAndNormalize(freshPost, 'threads').valid, true);
+  assert.strictEqual(filter.filterAndNormalize(oldPost, 'threads').valid, false);
   console.log('✅ 1. Kiểm thử tuổi bài đăng (< 72h / 3 ngày): Đạt chuẩn');
   passed++;
 
   // 2. Social Filter: Anti-Scam & Course Rejection
   const coursePost = { text: 'Khóa học bootcamp lập trình từ zero cam kết việc làm sau 3 tháng!', time: '1 giờ trước' };
   const scamPost = { text: 'Nhiệm vụ shopee xem video nhận 500k/ngày!', time: '1 giờ trước' };
-  assert.strictEqual(filter.filterAndNormalize(coursePost, 'facebook').valid, false);
+  assert.strictEqual(filter.filterAndNormalize(coursePost, 'threads').valid, false);
   assert.strictEqual(filter.filterAndNormalize(scamPost, 'threads').valid, false);
   console.log('✅ 2. Kiểm thử chống Scam & loại bỏ bài bán khóa học: Đạt chuẩn');
   passed++;
@@ -58,8 +58,8 @@ async function runTestSuite() {
     spotlightJobs: [scored]
   });
   assert.ok(html.includes('Job Scout VN'), 'HTML phải chứa tiêu đề Job Scout VN');
-  assert.ok(html.includes('6 Kênh Tuyển Dụng'), 'HTML phải thể hiện 6 kênh tuyển dụng');
-  console.log('✅ 5. Kiểm thử Khởi tạo Dashboard HTML (6 nền tảng): Đạt chuẩn');
+  assert.ok(html.includes('5 Nền Tảng (Zero-Login)'), 'HTML phải thể hiện 5 nền tảng Zero-Login');
+  console.log('✅ 5. Kiểm thử Khởi tạo Dashboard HTML (5 nền tảng Zero-Login): Đạt chuẩn');
   passed++;
 
   console.log(`\n🎉 HOÀN HẢO! Tất cả ${passed}/${passed} bài kiểm thử đã vượt qua thành công!\n`);
@@ -69,4 +69,3 @@ runTestSuite().catch(err => {
   console.error('Lỗi kiểm thử:', err);
   process.exit(1);
 });
-

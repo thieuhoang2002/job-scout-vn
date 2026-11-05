@@ -11,7 +11,12 @@ function printHelp() {
   console.log(`
 🎯 Job Scout VN - Personal AI Job Hunter & Reality Checker
 =============================================================
-Hỗ trợ 6 nền tảng: ITViec, LinkedIn, CareerViet, ViệcLàm24h, Facebook Groups & Threads.
+Hỗ trợ 5 nền tảng (100% Zero-Login, không cần đăng nhập):
+  🔴 ITViec.com         (Product & Startups)
+  🔵 LinkedIn Jobs      (MNCs & Big Tech - Cổng Guest Search)
+  🟠 CareerViet.vn      (Ngân hàng & Tập đoàn FDI)
+  🟣 ViệcLàm24h.vn      (SME & Doanh nghiệp nội địa qua SSR)
+  🧵 Threads (Meta)     (Kỹ sư & Tech Lead tuyển dụng < 72h)
 
 Sử dụng:
   node cli.js [options]
@@ -19,19 +24,16 @@ Sử dụng:
 Các tùy chọn:
   --url <url>        Đường dẫn website Portfolio của ứng viên (ví dụ: https://thhoang.io.vn)
   --cv <file>        Đường dẫn file CV (.md, .txt, .json)
-  --sources <list>   Danh sách nền tảng quét (mặc định: vieclam24h,itviec,careerviet,linkedin,facebook,threads)
+  --sources <list>   Danh sách nền tảng quét (mặc định: vieclam24h,itviec,careerviet,linkedin,threads)
   --pages <number>   Số trang cần quét trên các sàn lớn (mặc định: 6 trang)
   --output <file>    Đường dẫn file HTML xuất ra (mặc định: ./output/dashboard.html)
   --help             Hiển thị hướng dẫn này
-
-Bộ lọc Mạng Xã Hội (Facebook & Threads):
-  🛡️ Nghiêm ngặt: Chỉ lấy bài đăng < 3 ngày (< 72h) và tự động loại bỏ 100% bài bán khóa học, lừa đảo, nhiệm vụ!
 
 Ví dụ:
   node cli.js --url https://thhoang.io.vn
   node cli.js --cv ./examples/test_cv_frontend.md
   node cli.js --cv ./examples/test_cv_backend.md
-  node cli.js --sources facebook,threads --cv ./examples/test_cv_frontend.md
+  node cli.js --sources itviec,linkedin --url https://thhoang.io.vn
 `);
 }
 
@@ -84,7 +86,7 @@ async function main() {
     process.exit(1);
   }
 
-  console.log(`\n📡 [2/4] Đang quét thị trường việc làm đa nguồn (6 nền tảng: ITViec, LinkedIn, CareerViet, ViệcLàm24h, FB Groups, Threads)...`);
+  console.log(`\n📡 [2/4] Đang quét thị trường việc làm (5 nền tảng Zero-Login: ITViec, LinkedIn, CareerViet, ViệcLàm24h, Threads)...`);
   const jobs = await fetchAllJobs({
     maxPages,
     sources: selectedSources,

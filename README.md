@@ -24,31 +24,30 @@ Khi tìm kiếm việc làm IT tại Việt Nam trên các trang tuyển dụng 
 
 ---
 
-## 🌐 Các Nền Tảng Tuyển Dụng Đã Tích Hợp Thực Tế
+## 🌐 Các Nền Tảng Tuyển Dụng Đã Tích Hợp Thực Tế (100% Zero-Login)
 
 > [!NOTE]
-> **Nguyên tắc phát triển trung thực:** Chúng tôi chỉ hiển thị những nền tảng đã được viết code hoàn chỉnh và chạy thực tế. Không quảng cáo những sàn chưa hoàn thiện.
+> **Nguyên tắc phát triển trung thực & Zero-Login:** Toàn bộ 5 nền tảng dưới đây đều được xây dựng hoàn chỉnh và chạy thực tế **100% không yêu cầu đăng nhập tài khoản cá nhân**, không cần mật khẩu, không sợ bị khóa nick hay lộ thông tin riêng tư.
 
-| Nền tảng | Trạng thái thực tế | Kỹ thuật bóc tách & Lọc thông minh |
-| :--- | :---: | :--- |
-| **ITViec.com** | ✅ **Sẵn sàng 100%** | Bóc tách trực tiếp danh sách việc làm Software Dev, Tech Startups, Outsource xịn tại TP.HCM. |
-| **LinkedIn Jobs** | ✅ **Sẵn sàng 100%** | Khai thác cổng Guest Job Search API của LinkedIn không cần tài khoản đăng nhập. |
-| **CareerViet.vn** *(CareerBuilder)* | ✅ **Sẵn sàng 100%** | Bóc tách việc làm IT từ khối Ngân hàng, Doanh nghiệp FDI và Tập đoàn lớn. |
-| **Vieclam24h.vn** | ✅ **Sẵn sàng 100%** | Khai thác Next.js SSR `__NEXT_DATA__` (Cào hàng trăm việc làm trong 1.5s, không cần trình duyệt). |
-| **Facebook Groups** | ✅ **Sẵn sàng 100%** | Quét các hội nhóm lập trình (NodeJS, ReactJS, Golang, IT Jobs...). **Chỉ nhận bài < 3 ngày (< 72h)**, tích hợp AI lọc sạch 100% rác bán khoá học, scam. |
-| **Threads (threads.net)** | ✅ **Sẵn sàng 100%** | Quét bài đăng tuyển dụng từ mạng lưới Tech Lead & Recruiter công nghệ. **Chỉ nhận bài < 72h** với thông tin liên hệ và stack rõ ràng. |
+| Nền tảng | Trạng thái thực tế | Đăng nhập? | Kỹ thuật bóc tách & Lọc thông minh |
+| :--- | :---: | :---: | :--- |
+| **ITViec.com** | ✅ **Sẵn sàng 100%** | ❌ **Không** | Bóc tách trực tiếp danh sách việc làm Software Dev, Tech Startups, Outsource xịn tại TP.HCM. |
+| **LinkedIn Jobs** | ✅ **Sẵn sàng 100%** | ❌ **Không** | Khai thác cổng Guest Job Search API của LinkedIn không cần tài khoản, có Human Jitter chống chặn. |
+| **CareerViet.vn** *(CareerBuilder)* | ✅ **Sẵn sàng 100%** | ❌ **Không** | Bóc tách việc làm IT từ khối Ngân hàng, Doanh nghiệp FDI và Tập đoàn lớn. |
+| **Vieclam24h.vn** | ✅ **Sẵn sàng 100%** | ❌ **Không** | Khai thác Next.js SSR `__NEXT_DATA__` (Cào hàng trăm việc làm trong 1.5s, không cần trình duyệt). |
+| **Threads (threads.net)** | ✅ **Sẵn sàng 100%** | ❌ **Không** | Quét bài đăng tuyển dụng công khai từ mạng lưới Tech Lead & HR công nghệ. **Chỉ nhận bài < 72h** kèm email/telegram liên hệ. |
 
 ---
 
 ## ⚡ Tính Năng Nổi Bật
 
 - 🚀 **Kỹ thuật REA (Reverse Engineering Analysis):** Khai thác trực tiếp Next.js SSR / App Router payloads (`__NEXT_DATA__`, RSC `self.__next_f.push`). Cào hàng trăm việc làm trong **1.5 giây**, không cần cài đặt Chromium / Puppeteer nặng nề, không tốn RAM.
-- 📱 **Săn Việc Trên Mạng Xã Hội (Facebook Groups & Threads):** Tận dụng phiên trình duyệt sẵn có của người dùng để quét các nhóm riêng tư đã tham gia hoặc trang công khai. 
-  - **Giới hạn thời gian vàng:** Tuyệt đối chỉ nhận các bài đăng **< 3 ngày (< 72 giờ)** để đảm bảo vị trí còn mở.
-  - **Lá chắn chống Scam & Bán khoá học:** Tự động loại bỏ hoàn toàn các bài quảng cáo bootcamp lùa gà, nhiệm vụ online, việc nhẹ lương cao, cờ bạc.
+- 🛡️ **100% Zero-Login & Bảo Mật Tuyệt Đối:** Không bao giờ hỏi tài khoản, mật khẩu, không can thiệp cookie cá nhân. Mọi thao tác chạy trực tiếp trên máy bạn (Local-First).
+- ⏱️ **Lọc Thời Gian Vàng (< 72 Giờ trên Threads):** Tự động loại bỏ mọi bài đăng cũ hơn 3 ngày (> 72h) để đảm bảo vị trí tuyển dụng còn mở.
+- 🚫 **Lá Chắn AI Chống Scam & Bán Khóa Học:** Tự động phát hiện và loại bỏ 100% bài quảng cáo bootcamp lùa gà, nhiệm vụ online, việc nhẹ lương cao, cờ bạc.
 - 👤 **Bóc tách Hồ sơ Đa nguồn (Universal Profile Ingestion):** Tự động phân tích kỹ năng, số năm kinh nghiệm, các dự án từ **Link Portfolio trực tuyến** (như [thhoang.io.vn](https://thhoang.io.vn)) hoặc **File CV cục bộ** (`.md`, `.txt`, `.json`).
 - 🧠 **Ma trận Chấm Điểm Khách Quan (Match Engine):** Tính điểm tương thích $0 - 100\%$ dựa trên chuyên ngành, công nghệ cốt lõi và số năm kinh nghiệm thực tế. Tự động gắn nhãn `DEV MATCH` cho các tin lập trình thực thụ.
-- 📊 **Dashboard HTML Độc Lập (Self-Contained):** Xuất ra 1 file HTML duy nhất (Tailwind CSS + Chart.js) mở xem offline mọi lúc, có sẵn biểu đồ phân bổ mức lương theo 6 kênh, bộ lọc nhanh và link nộp hồ sơ trực tiếp.
+- 📊 **Dashboard HTML Độc Lập (Self-Contained):** Xuất ra 1 file HTML duy nhất (Tailwind CSS + Chart.js) mở xem offline mọi lúc, có sẵn biểu đồ phân bổ mức lương theo 5 kênh, bộ lọc nhanh và link nộp hồ sơ trực tiếp.
 - 🤖 **Tương thích Đa nền tảng AI Agent:** Hỗ trợ chuẩn Skill cho **Google Antigravity**, **Claude Code**, và **OpenAI Codex CLI**.
 
 ---
@@ -59,13 +58,12 @@ Khi tìm kiếm việc làm IT tại Việt Nam trên các trang tuyển dụng 
 flowchart TD
     Candidate["Ứng Viên (Portfolio URL hoặc File CV)"] --> Parser["1. Universal Profile Parser<br/>(REA Web Extractor)"]
     
-    subgraph ScrapingLayer ["2. Đa Nền Tảng (6 Kênh Tuyển Dụng)"]
-        S1["Vieclam24h Adapter"]
-        S2["ITViec Adapter"]
-        S3["CareerViet Adapter"]
-        S4["LinkedIn Guest Adapter"]
-        S5["Facebook Groups Adapter (&lt; 72h + Anti-Scam)"]
-        S6["Threads Adapter (&lt; 72h + Anti-Scam)"]
+    subgraph ScrapingLayer ["2. Đa Nền Tảng (5 Nguồn Zero-Login)"]
+        S1["Vieclam24h Adapter (Next.js SSR)"]
+        S2["ITViec Adapter (Software Engineering)"]
+        S3["CareerViet Adapter (Ngân hàng & FDI)"]
+        S4["LinkedIn Guest Adapter (MNCs / USD)"]
+        S5["Threads Adapter (&lt; 72h + Anti-Scam AI)"]
     end
     
     Parser --> MatchEngine["3. Compatibility Match Engine<br/>(Phân loại Dev vs Helpdesk & Chấm điểm 0-100)"]
@@ -79,21 +77,47 @@ flowchart TD
 
 ## 🚀 Cách Sử Dụng (Dành Cho Người Lười — AI Làm Hết Từ A-Z)
 
-Bạn **không cần phải gõ code phức tạp hay mở terminal**. Hãy để AI Agent làm toàn bộ công việc tìm kiếm và lọc việc:
+Bạn **không cần phải gõ code phức tạp hay mở terminal**. Hệ thống hỗ trợ bộ mẫu câu lệnh đa hoàn cảnh:
 
-### 1. Kích hoạt trực tiếp bằng 1 câu lệnh trong AI Chat
-Nếu bạn đang dùng **Google Antigravity**, **Claude Code**, hoặc **Codex**, chỉ cần gõ:
+### 🎯 4 Hoàn Cảnh Săn Việc Thực Tế:
+
+#### ⚡ Hoàn cảnh 1: Chế độ Siêu Tốc — 100% Zero-Login (Mặc định)
+> Quét tức thì 5 nền tảng mở (ITViec, LinkedIn, CareerViet, ViệcLàm24h, Threads), không cần bất kỳ tài khoản nào.
 ```text
-/job-scout-vn
+/job-scout-vn https://thhoang.io.vn
 ```
-Hoặc chat tự nhiên bằng tiếng Việt:
+*Hoặc chat tự nhiên:*
 > *"Tìm giúp mình các việc làm IT phù hợp với portfolio https://thhoang.io.vn"*
 
-✨ **AI sẽ tự động:**
-1. Quét portfolio / CV của bạn để rút ra kỹ năng và số năm kinh nghiệm.
-2. Cào tức thì hàng trăm tin tuyển dụng từ các sàn uy tín.
-3. Chấm điểm độ tương thích ($0 - 100\%$) và lọc sạch tin Helpdesk / Cài Win.
-4. Bật sẵn **Dashboard HTML tương tác** cho bạn chỉ việc click nộp hồ sơ!
+---
+
+#### 🌐 Hoàn cảnh 2: Săn Việc Công Ty Đa Quốc Gia & Lương USD (Chỉ ITViec + LinkedIn)
+> Tập trung vào doanh nghiệp nước ngoài, môi trường tiếng Anh, mức đãi ngộ cao và làm việc linh hoạt/Remote.
+```text
+/job-scout-vn https://thhoang.io.vn --sources itviec,linkedin
+```
+*Hoặc chat tự nhiên:*
+> *"Đối chiếu portfolio https://thhoang.io.vn giúp mình, chỉ tìm việc trên ITViec và LinkedIn, ưu tiên các vị trí Remote hoặc lương trên 25 triệu."*
+
+---
+
+#### 🧵 Hoàn cảnh 3: Săn Tin Tuyển Tuyển Dụng Nóng Hổi Từ Tech Lead Trên Threads (< 72 Giờ)
+> Bắt kịp các cơ hội tuyển trực tiếp, phản hồi siêu tốc từ các kỹ sư và trưởng nhóm công nghệ trên Threads.
+```text
+/job-scout-vn https://thhoang.io.vn --sources threads
+```
+*Hoặc chat tự nhiên:*
+> *"Quét giúp mình các bài tuyển dụng React và Node.js mới đăng trong 3 ngày qua trên Threads."*
+
+---
+
+#### 🎓 Hoàn cảnh 4: Dành Cho Junior / Fresher (Lọc Sạch Bẫy Helpdesk / Cài Win)
+> Sử dụng file CV cá nhân trên máy (`.md`, `.txt`, `.json`), tập trung vào các vị trí lập trình khởi đầu thực thụ.
+```text
+/job-scout-vn --cv ./my_cv.md --pages 4
+```
+*Hoặc chat tự nhiên:*
+> *"Mình gửi file CV my_cv.md, hãy tìm các vị trí Junior Lập trình phù hợp, loại bỏ triệt để các tin Helpdesk hay trực vận hành mạng."*
 
 ---
 
