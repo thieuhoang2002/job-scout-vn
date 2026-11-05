@@ -49,7 +49,10 @@ Khi tiếp nhận yêu cầu, AI chủ động nhận diện hoàn cảnh của 
 
 ### 🔑 Thiết lập lần đầu cho tính năng Facebook (First-time Onboarding):
 - **5 sàn mở (ITViec, LinkedIn, CareerViet, ViệcLàm24h, Threads):** 100% Zero-Login, người dùng cài xong là dùng được ngay.
-- **Tính năng Facebook Groups:** Khi người dùng lần đầu yêu cầu Facebook, AI sẽ kiểm tra phiên và hướng dẫn người dùng mở script tự sinh `~/.job-scout-vn/login-facebook.bat` (hoặc `node cli.js --login-facebook`) để đăng nhập 1 lần duy nhất.
+- **Tính năng Facebook Groups:** Nếu người dùng có nhu cầu tìm việc trên Facebook Groups, hướng dẫn họ đăng nhập ngay sau khi cài skill bằng cách:
+  - Bấm đúp vào file `DangNhapFacebook.bat` (hoặc `~/.job-scout-vn/login-facebook.bat`).
+  - Hoặc chạy lệnh: `npm run login:fb` (hoặc `node cli.js --login-facebook`).
+  - Đăng nhập tài khoản trên cửa sổ Chrome mở ra. Phiên được lưu vĩnh viễn trong máy, các lần quét sau hoàn toàn tự động.
 
 Nếu người dùng chỉ gõ `/job-scout-vn` cộc lốc chưa kèm link/file:
 > *"Chào bạn! Hãy gửi cho mình link Portfolio trực tuyến (ví dụ: https://myportfolio.dev) hoặc đường dẫn file CV (.md, .txt) của bạn nhé. Bạn muốn mình quét nhanh toàn diện (5 sàn mở) hay chỉ nhắm vào công ty đa quốc gia / Remote trên LinkedIn & ITViec?"*

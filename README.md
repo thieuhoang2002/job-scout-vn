@@ -82,6 +82,31 @@ flowchart TD
 
 ---
 
+## 📢 QUAN TRỌNG: NẾU BẠN CÓ NHU CẦU TÌM JOB TRÊN FACEBOOK GROUPS
+
+> [!IMPORTANT]
+> ### 🔑 CÀI SKILL XONG LÀ ĐĂNG NHẬP FACEBOOK NGAY (CHỈ CẦN LÀM 1 LẦN DUY NHẤT)!
+> - **5 Sàn mở (ITViec, LinkedIn, CareerViet, ViệcLàm24h, Threads):** 100% Zero-Login, chạy tức thì không cần tài khoản hay bất kỳ cấu hình nào.
+> - **Riêng Facebook Groups:** Do Facebook bảo mật nghiêm ngặt và bắt buộc đăng nhập để đọc bài viết trong các nhóm tuyển dụng, hệ thống sử dụng **trình duyệt Chrome với Profile độc lập cách ly (`~/.job-scout-vn/browser_profile`)** để đảm bảo **an toàn tuyệt đối cho tài khoản cá nhân của bạn**.
+>
+> 👉 **Để tránh bị gián đoạn tiến trình khi AI đang săn việc, bạn hãy đăng nhập Facebook NGAY SAU KHI CÀI SKILL theo các bước sau:**
+>
+> 1. **Mở file kích hoạt đăng nhập:**
+>    - **Cách 1 (Nhanh nhất):** Mở thư mục dự án `job-scout-vn` và **bấm đúp chuột vào file `DangNhapFacebook.bat`** (hoặc file tự sinh `~/.job-scout-vn/login-facebook.bat`).
+>    - **Cách 2 (Qua Terminal):** Gõ lệnh sau rồi nhấn Enter:
+>      ```bash
+>      npm run login:fb
+>      # hoặc: node cli.js --login-facebook
+>      ```
+> 2. **Đăng nhập trên cửa sổ Chrome vừa hiện lên:**
+>    - Một cửa sổ Google Chrome riêng biệt sẽ mở ra trang `https://www.facebook.com`.
+>    - Bạn đăng nhập tài khoản Facebook của bạn vào đó.
+>    - **Đã xong!** Bạn có thể tắt cửa sổ Chrome đó đi. Toàn bộ phiên đăng nhập (cookies, session) được lưu bền vững cục bộ trên máy bạn.
+>
+> Từ lần sau, bất cứ khi nào bạn gõ prompt tìm việc có kèm link Group Facebook, AI sẽ tự động vượt ải trong 2 giây mà không bao giờ hỏi hay phiền bạn đăng nhập lại nữa!
+
+---
+
 ## 🚀 Cách Sử Dụng (Dành Cho Người Lười — AI Làm Hết Từ A-Z)
 
 Bạn **không cần phải gõ code phức tạp hay mở terminal**. Hệ thống hỗ trợ bộ mẫu câu lệnh đa hoàn cảnh:
