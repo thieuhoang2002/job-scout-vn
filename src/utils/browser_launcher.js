@@ -38,7 +38,15 @@ class BrowserLauncher {
   static async openInteractiveLogin(userDataDir, onProgress) {
     if (onProgress) {
       onProgress('⚠️ [Facebook] Chưa phát hiện phiên đăng nhập.');
-      onProgress('🚀 Đang tự động mở cửa sổ Chrome lên màn hình để bạn đăng nhập Facebook...');
+      onProgress('🚀 Đang tự động dọn dẹp tiến trình treo và bật cửa sổ Chrome lên màn hình...');
+    }
+
+    // Dọn dẹp các tiến trình Chrome chạy ngầm không có cửa sổ để tránh nuốt giao diện
+    try {
+      const { execSync } = require('child_process');
+      execSync('powershell -Command "Get-Process chrome -ErrorAction SilentlyContinue | Where-Object { -not $_.MainWindowTitle } | Stop-Process -Force -ErrorAction SilentlyContinue"');
+    } catch {
+      // Ignored
     }
 
     const chromePath = BrowserLauncher.detectChromePath();
@@ -55,8 +63,9 @@ class BrowserLauncher {
     }, 1500);
 
     if (onProgress) {
-      onProgress('👉 Cửa sổ Chrome đã bật lên. Bạn hãy đăng nhập tài khoản Facebook trên cửa sổ đó nhé!');
-      onProgress('⏳ Hệ thống đang đợi bạn hoàn tất đăng nhập...');
+      onProgress('👉 Cửa sổ Facebook - Google Chrome đã bật lên ngay trên màn hình.');
+      onProgress('👉 Bạn hãy đăng nhập tài khoản Facebook trên cửa sổ đó nhé (chỉ cần 1 lần duy nhất)!');
+      onProgress('⏳ Hệ thống đang tự động theo dõi và sẽ bắt đầu cào dữ liệu ngay sau khi bạn đăng nhập xong...');
     }
 
     const startTime = Date.now();
