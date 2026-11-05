@@ -63,6 +63,7 @@ class FacebookRunner {
         '--disable-setuid-sandbox',
         '--disable-blink-features=AutomationControlled',
         '--start-maximized',
+        '--new-window',
         '--window-position=50,50',
         '--window-size=1280,900'
       ]
