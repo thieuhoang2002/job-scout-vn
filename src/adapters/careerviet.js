@@ -1,4 +1,5 @@
 const https = require('https');
+const { humanDelay } = require('../utils/delay');
 
 /**
  * REA-based Scraper for CareerViet.vn (CareerBuilder)
@@ -96,7 +97,7 @@ class CareervietAdapter {
 
         if (pageJobs.length === 0) break;
         jobs.push(...pageJobs);
-        await this.delay(300);
+        await humanDelay(600, 1500);
       } catch (err) {
         console.error(`[CareerViet] Lỗi trang ${page}:`, err.message);
         break;

@@ -298,3 +298,4 @@ class SocialAiFilter {
 }
 
 module.exports = SocialAiFilter;
+

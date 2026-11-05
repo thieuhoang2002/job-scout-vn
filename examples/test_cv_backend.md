@@ -23,3 +23,4 @@ Kỹ sư phần mềm Backend với 3.5 năm kinh nghiệm chuyên sâu về ki�
 2. **E-Commerce Order Management System (OMS):**
    - Microservices với Spring Boot 3 và Apache Kafka.
    - Giảm độ trễ truy vấn database từ 450ms xuống 25ms thông qua indexing và Redis caching.
+

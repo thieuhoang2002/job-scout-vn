@@ -1,8 +1,9 @@
 const https = require('https');
+const { humanDelay } = require('../utils/delay');
 
 /**
  * REA-based Scraper for ITViec.com
- * Extracts verified IT / Software Engineering jobs in Ho Chi Minh City.
+ * Extracts verified IT / Software Engineering jobs in Ho Chi Minh City with human jitter.
  */
 class ItviecAdapter {
   constructor(options = {}) {
@@ -95,7 +96,7 @@ class ItviecAdapter {
         if (pageJobs.length === 0) break;
         jobs.push(...pageJobs);
 
-        await this.delay(300);
+        await humanDelay(600, 1500);
       } catch (err) {
         console.error(`[ITviec] Lỗi trang ${page}:`, err.message);
         break;

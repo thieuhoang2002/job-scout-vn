@@ -22,3 +22,4 @@ Kỹ sư Frontend với 2 năm kinh nghiệm xây dựng Single Page Application
    - Quản lý biểu đồ thời gian thực với Chart.js và WebSocket, tối ưu bundle size giảm 35%.
 2. **FinTech Customer Portal:**
    - Ứng dụng Next.js 14 App Router, đa ngôn ngữ i18n, đạt điểm Lighthouse 95+.
+
