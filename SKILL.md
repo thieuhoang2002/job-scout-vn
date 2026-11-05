@@ -32,11 +32,10 @@ Khi tiếp nhận yêu cầu, AI chủ động nhận diện hoàn cảnh của 
 1. ⚡ **Chế độ Siêu Tốc (Mặc định — 5 Nguồn Zero-Login):**
    - Quét đồng thời ITViec, LinkedIn, CareerViet, ViệcLàm24h & Threads.
    - Lệnh: `node cli.js --url <URL>` hoặc `node cli.js --cv <CV_PATH>`
-2. 📘 **Chế độ Facebook Targeted (Fail-Fast & Nhận Diện Profile Qua Email):**
+2. 📘 **Chế độ Facebook Targeted (Fail-Fast & Group Kín Chỉ Định):**
    - Người dùng yêu cầu quét Facebook: Bắt buộc cung cấp URL Group mục tiêu.
-   - Nếu người dùng cung cấp email Chrome profile (ví dụ: `your_email@gmail.com`): Tự động trỏ đúng Profile Chrome đã đăng nhập thông qua cờ `--fb-email your_email@gmail.com`.
-   - Luồng chạy: **Ải Facebook thực thi đầu tiên**. Nếu chưa login, mở Chrome đợi login; nếu không thành công, dừng tiến trình ngay lập tức (Fail-Fast).
-   - Lệnh: `node cli.js --url <URL> --sources facebook,itviec,linkedin --fb-groups "<GROUP_URLS>" --fb-email <EMAIL>`
+   - Luồng chạy: **Ải Facebook thực thi đầu tiên** với profile cách ly (`~/.job-scout-vn/browser_profile`). Cửa sổ Chrome tự động bật nổi lên màn hình để người dùng đăng nhập 1 lần duy nhất; nếu không có mục tiêu hoặc lỗi, dừng tiến trình ngay lập tức (Fail-Fast).
+   - Lệnh: `node cli.js --url <URL> --sources facebook,itviec,linkedin --fb-groups "<GROUP_URLS>"`
 3. 🌐 **Chế độ Công Ty Đa Quốc Gia & Remote:**
    - Người dùng yêu cầu môi trường tiếng Anh, MNCs, lương USD.
    - Lệnh: `node cli.js --sources itviec,linkedin --url <URL>`

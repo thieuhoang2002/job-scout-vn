@@ -22,86 +22,7 @@ class FacebookRunner {
     this.filter = new SocialAiFilter(options);
     this.chromePath = options.chromePath || this.detectChromePath();
     this.maxAgeHours = options.maxAgeHours || 72;
-
-    this.profileEmail = options.profileEmail || null;
-    this.profileName = options.profileName || null;
-    this.resolvedProfile = FacebookRunner.resolveProfile(this.profileEmail || this.profileName);
-
-    this.defaultUserDataDir = path.join(os.homedir(), '.job-scout-vn', 'browser_profile');
-    this.userDataDir = options.userDataDir || (this.resolvedProfile ? FacebookRunner.getSystemUserDataDir() : this.defaultUserDataDir);
-  }
-
-  static getSystemUserDataDir() {
-    return path.join(os.homedir(), 'AppData', 'Local', 'Google', 'Chrome', 'User Data');
-  }
-
-  /**
-   * Tự động dò tìm Profile Chrome theo Email tài khoản hoặc tên Profile
-   * bằng cách đọc file 'Local State' (profile.info_cache) của Chrome.
-   */
-  static resolveProfile(identifier, customLocalStatePath = null) {
-    if (!identifier || typeof identifier !== 'string') return null;
-    const localStatePath = customLocalStatePath || path.join(FacebookRunner.getSystemUserDataDir(), 'Local State');
-    if (!fs.existsSync(localStatePath)) {
-      return null;
-    }
-
-    try {
-      const content = fs.readFileSync(localStatePath, 'utf8');
-      const data = JSON.parse(content);
-      const cache = data.profile?.info_cache;
-      if (!cache) return null;
-
-      const idLower = identifier.trim().toLowerCase();
-
-      // 1. Thử khớp chính xác thư mục (Default, Profile 1, Profile 2...)
-      for (const dirKey of Object.keys(cache)) {
-        if (dirKey.toLowerCase() === idLower) {
-          return {
-            profileDir: dirKey,
-            name: cache[dirKey].name || dirKey,
-            email: cache[dirKey].user_name || ''
-          };
-        }
-      }
-
-      // 2. Thử khớp email đăng nhập (user_name trong Local State)
-      for (const [dirKey, val] of Object.entries(cache)) {
-        if (val.user_name && val.user_name.toLowerCase() === idLower) {
-          return {
-            profileDir: dirKey,
-            name: val.name || dirKey,
-            email: val.user_name
-          };
-        }
-      }
-
-      // 3. Khớp theo Profile Name (ví dụ: "Work", "Personal")
-      for (const [dirKey, val] of Object.entries(cache)) {
-        if (val.name && val.name.toLowerCase() === idLower) {
-          return {
-            profileDir: dirKey,
-            name: val.name,
-            email: val.user_name || ''
-          };
-        }
-      }
-
-      // 4. Khớp một phần email
-      for (const [dirKey, val] of Object.entries(cache)) {
-        if (val.user_name && val.user_name.toLowerCase().includes(idLower)) {
-          return {
-            profileDir: dirKey,
-            name: val.name || dirKey,
-            email: val.user_name
-          };
-        }
-      }
-    } catch {
-      // Ignored
-    }
-
-    return null;
+    this.userDataDir = options.userDataDir || path.join(os.homedir(), '.job-scout-vn', 'browser_profile');
   }
 
   detectChromePath() {
@@ -116,65 +37,39 @@ class FacebookRunner {
     return 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
   }
 
-  async launchBrowser(onProgress) {
-    const launchArgs = [
-      '--no-sandbox',
-      '--disable-setuid-sandbox',
-      '--disable-blink-features=AutomationControlled',
-      '--start-maximized'
-    ];
-
-    if (this.resolvedProfile) {
-      if (onProgress) {
-        onProgress(`[Facebook] 🎯 Đã tự động nhận diện Profile Chrome: "${this.resolvedProfile.name}" (${this.resolvedProfile.profileDir})`);
-      }
-      launchArgs.push(`--profile-directory=${this.resolvedProfile.profileDir}`);
-
+  focusWindow() {
+    if (process.platform === 'win32') {
       try {
-        return await puppeteer.launch({
-          executablePath: this.chromePath,
-          userDataDir: this.userDataDir,
-          headless: false,
-          defaultViewport: null,
-          args: launchArgs
-        });
-      } catch (err) {
-        if (err.message && (err.message.includes('already running') || err.message.includes('EBUSY') || err.message.includes('locked'))) {
-          if (onProgress) {
-            onProgress(`⚠️ [Facebook] Profile Chrome "${this.resolvedProfile.name}" đang được mở ở cửa sổ khác.`);
-            onProgress('👉 Để không làm gián đoạn phiên làm việc hiện tại, Job Scout VN tự động chuyển sang Profile độc lập (~/.job-scout-vn/browser_profile)...');
-          }
-          if (!fs.existsSync(this.defaultUserDataDir)) {
-            fs.mkdirSync(this.defaultUserDataDir, { recursive: true });
-          }
-          return await puppeteer.launch({
-            executablePath: this.chromePath,
-            userDataDir: this.defaultUserDataDir,
-            headless: false,
-            defaultViewport: null,
-            args: [
-              '--no-sandbox',
-              '--disable-setuid-sandbox',
-              '--disable-blink-features=AutomationControlled',
-              '--start-maximized'
-            ]
-          });
-        }
-        throw err;
+        const { exec } = require('child_process');
+        exec('powershell -Command "$wshell = New-Object -ComObject WScript.Shell; $wshell.AppActivate(\'Chrome\'); $wshell.AppActivate(\'Facebook\')"');
+      } catch {
+        // Ignored
       }
     }
+  }
 
+  async launchBrowser(onProgress) {
     if (!fs.existsSync(this.userDataDir)) {
       fs.mkdirSync(this.userDataDir, { recursive: true });
     }
 
-    return await puppeteer.launch({
+    const browser = await puppeteer.launch({
       executablePath: this.chromePath,
       userDataDir: this.userDataDir,
-      headless: false, // Headful để người dùng thấy và tránh anti-bot của Meta
+      headless: false,
       defaultViewport: null,
-      args: launchArgs
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-blink-features=AutomationControlled',
+        '--start-maximized',
+        '--window-position=50,50',
+        '--window-size=1280,900'
+      ]
     });
+
+    this.focusWindow();
+    return browser;
   }
 
   /**
@@ -182,24 +77,44 @@ class FacebookRunner {
    */
   async ensureLoggedIn(page, onProgress) {
     if (onProgress) onProgress('[Facebook] Đang kiểm tra trạng thái đăng nhập...');
-    await page.goto('https://www.facebook.com/', { waitUntil: 'networkidle2', timeout: 45000 });
+    try {
+      await page.goto('https://www.facebook.com/', { waitUntil: 'domcontentloaded', timeout: 45000 });
+      await page.bringToFront();
+      this.focusWindow();
+    } catch {
+      // Bỏ qua lỗi load ban đầu nếu mạng chậm
+    }
 
-    // Kiểm tra xem đã đăng nhập chưa
-    // Nếu có ô input email/pass nghĩa là chưa login
-    const isLoggedOut = await page.evaluate(() => {
-      return !!document.querySelector('input#email, input[name="email"]');
-    });
+    // Kiểm tra đăng nhập bằng cookie chuẩn 'c_user' của Facebook
+    let cookies = await page.cookies();
+    let isLoggedIn = cookies.some(c => c.name === 'c_user');
 
-    if (isLoggedOut) {
+    if (!isLoggedIn) {
       if (onProgress) {
-        onProgress('⚠️ [Facebook] CHƯA ĐĂNG NHẬP! Cửa sổ Chrome đã mở.');
-        onProgress('👉 Vui lòng đăng nhập tài khoản Facebook của bạn trên cửa sổ Chrome vừa hiện lên...');
+        onProgress('⚠️ [Facebook] CHƯA CÓ PHIÊN ĐĂNG NHẬP! Cửa sổ trình duyệt đã bật lên.');
+        onProgress('👉 Vui lòng đăng nhập tài khoản Facebook trên cửa sổ vừa mở (chỉ cần đăng nhập 1 lần duy nhất, các lần sau sẽ tự nhớ)...');
+      }
+      this.focusWindow();
+
+      const startTime = Date.now();
+      const maxWaitMs = 180000; // 3 phút
+
+      while (Date.now() - startTime < maxWaitMs) {
+        await new Promise(r => setTimeout(r, 1500));
+        try {
+          cookies = await page.cookies();
+          if (cookies.some(c => c.name === 'c_user')) {
+            isLoggedIn = true;
+            break;
+          }
+        } catch {
+          // Bỏ qua lỗi context khi page đang redirect trong lúc login
+        }
       }
 
-      // Đợi người dùng tự đăng nhập (chờ tối đa 3 phút)
-      await page.waitForFunction(() => {
-        return !document.querySelector('input#email, input[name="email"]');
-      }, { timeout: 180000 });
+      if (!isLoggedIn) {
+        throw new Error('Hết thời gian chờ đăng nhập (3 phút). Vui lòng thử lại và hoàn tất đăng nhập.');
+      }
 
       if (onProgress) onProgress('✅ [Facebook] Đăng nhập thành công! Phiên đã được lưu cho các lần sau.');
       await humanDelay(2000, 3500);

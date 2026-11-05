@@ -27,8 +27,6 @@ Các tùy chọn:
   --cv <file>           Đường dẫn file CV (.md, .txt, .json)
   --sources <list>      Danh sách nền tảng quét (mặc định: vieclam24h,itviec,careerviet,linkedin,threads)
   --fb-groups <urls>    Danh sách link Group Facebook mục tiêu (cách nhau bởi dấu phẩy)
-  --fb-email <email>    Email Chrome Profile đã đăng nhập Facebook (ví dụ: your_email@gmail.com)
-  --fb-profile <name>   Tên Profile Chrome (ví dụ: Default, "Profile 1", "Cá nhân")
   --pages <number>      Số trang cần quét trên các sàn lớn (mặc định: 6 trang)
   --output <file>       Đường dẫn file HTML xuất ra (mặc định: ./output/dashboard.html)
   --help                Hiển thị hướng dẫn này
@@ -37,8 +35,8 @@ Ví dụ:
   # 1. Quét nhanh 5 nguồn Zero-Login:
   node cli.js --url https://myportfolio.dev
 
-  # 2. Quét chuyên biệt có Facebook (Facebook First với Profile nhận diện tự động qua Email):
-  node cli.js --url https://myportfolio.dev --sources facebook,itviec,linkedin --fb-groups "https://facebook.com/groups/nodejsvietnam" --fb-email your_email@gmail.com
+  # 2. Quét chuyên biệt có Facebook (Facebook First):
+  node cli.js --url https://myportfolio.dev --sources facebook,itviec,linkedin --fb-groups "https://facebook.com/groups/nodejsvietnam"
 `);
 }
 
@@ -54,8 +52,6 @@ async function main() {
   let maxPages = 6;
   let selectedSources = null;
   let facebookGroups = [];
-  let facebookEmail = null;
-  let facebookProfile = null;
   let outputPath = path.join(__dirname, 'output', 'dashboard.html');
 
   for (let i = 0; i < args.length; i++) {
@@ -73,12 +69,6 @@ async function main() {
       i++;
     } else if (args[i] === '--fb-groups' && args[i + 1]) {
       facebookGroups = args[i + 1].split(',').map(s => s.trim());
-      i++;
-    } else if (args[i] === '--fb-email' && args[i + 1]) {
-      facebookEmail = args[i + 1].trim();
-      i++;
-    } else if (args[i] === '--fb-profile' && args[i + 1]) {
-      facebookProfile = args[i + 1].trim();
       i++;
     } else if (args[i] === '--output' && args[i + 1]) {
       outputPath = path.resolve(args[i + 1]);
@@ -110,8 +100,6 @@ async function main() {
       maxPages,
       sources: selectedSources,
       facebookGroups,
-      facebookEmail,
-      facebookProfile,
       onProgress: (msg) => console.log(`   ${msg}`)
     });
   } catch (err) {

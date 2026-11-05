@@ -29,10 +29,7 @@ async function fetchAllJobs(options = {}) {
       throw new Error('❌ BẠN ĐÃ CHỌN QUÉT FACEBOOK NHƯNG CHƯA CHỈ ĐỊNH LINK GROUP MỤC TIÊU!\n👉 Hãy cung cấp URL nhóm cụ thể qua cờ: --fb-groups "https://facebook.com/groups/..."');
     }
 
-    const fbRunner = new FacebookRunner({
-      profileEmail: options.facebookEmail,
-      profileName: options.facebookProfile
-    });
+    const fbRunner = new FacebookRunner();
     try {
       const fbJobs = await fbRunner.run({
         targetGroups: options.facebookGroups,

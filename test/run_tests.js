@@ -66,40 +66,12 @@ async function runTestSuite() {
   console.log('✅ 5. Kiểm thử Khởi tạo Dashboard HTML (5 nền tảng Zero-Login): Đạt chuẩn');
   passed++;
 
-  // 6. Facebook Chrome Profile Resolver
-  const mockLocalStatePath = path.join(os.tmpdir(), `test_local_state_${Date.now()}.json`);
-  const mockData = {
-    profile: {
-      info_cache: {
-        Default: { name: 'Cá nhân', user_name: 'personal_user@example.com' },
-        'Profile 1': { name: 'Work Account', user_name: 'engineer@corp.com' },
-        'Profile 2': { name: 'Dev Profile', user_name: 'candidate@example.com' }
-      }
-    }
-  };
-  fs.writeFileSync(mockLocalStatePath, JSON.stringify(mockData), 'utf8');
-
-  try {
-    const matchedByEmail = FacebookRunner.resolveProfile('candidate@example.com', mockLocalStatePath);
-    assert.strictEqual(matchedByEmail.profileDir, 'Profile 2');
-    assert.strictEqual(matchedByEmail.name, 'Dev Profile');
-
-    const matchedByName = FacebookRunner.resolveProfile('Cá nhân', mockLocalStatePath);
-    assert.strictEqual(matchedByName.profileDir, 'Default');
-
-    const matchedByDir = FacebookRunner.resolveProfile('Profile 1', mockLocalStatePath);
-    assert.strictEqual(matchedByDir.profileDir, 'Profile 1');
-
-    const notFound = FacebookRunner.resolveProfile('nonexistent@example.com', mockLocalStatePath);
-    assert.strictEqual(notFound, null);
-
-    console.log('✅ 6. Kiểm thử Tự động nhận diện Profile Chrome qua Email (Local State): Đạt chuẩn');
-    passed++;
-  } finally {
-    if (fs.existsSync(mockLocalStatePath)) {
-      fs.unlinkSync(mockLocalStatePath);
-    }
-  }
+  // 6. Facebook Runner Isolated Profile Check
+  const fbRunner = new FacebookRunner();
+  assert.strictEqual(fbRunner.name, 'facebook');
+  assert.ok(fbRunner.userDataDir.includes('.job-scout-vn'));
+  console.log('✅ 6. Kiểm thử Khởi tạo Facebook Runner (Profile độc lập cách ly): Đạt chuẩn');
+  passed++;
 
   console.log(`\n🎉 HOÀN HẢO! Tất cả ${passed}/${passed} bài kiểm thử đã vượt qua thành công!\n`);
 }

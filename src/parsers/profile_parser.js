@@ -28,9 +28,21 @@ class ProfileParser {
       throw new Error(`Không tìm thấy file tại đường dẫn: ${input}`);
     }
 
+    // Case 2a: PDF with companion .md or .txt
+    if (input.endsWith('.pdf')) {
+      const mdPath = input.replace(/\.pdf$/i, '.md');
+      const txtPath = input.replace(/\.pdf$/i, '.txt');
+      if (fs.existsSync(mdPath)) {
+        return this.parseTextCv(fs.readFileSync(mdPath, 'utf8'));
+      }
+      if (fs.existsSync(txtPath)) {
+        return this.parseTextCv(fs.readFileSync(txtPath, 'utf8'));
+      }
+    }
+
     const content = fs.readFileSync(input, 'utf8');
 
-    // Case 2a: JSON Profile
+    // Case 2b: JSON Profile
     if (input.endsWith('.json')) {
       try {
         return JSON.parse(content);
