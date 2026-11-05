@@ -11,3 +11,4 @@ echo 👉 Vui lòng đăng nhập tài khoản Facebook của bạn.
 echo 👉 Sau khi đăng nhập xong, bạn có thể quay lại AI Chat để quét việc làm bình thường!
 echo ========================================================
 pause
+

@@ -3,6 +3,7 @@ const path = require('path');
 const os = require('os');
 const puppeteer = require('puppeteer-core');
 const SocialAiFilter = require('./social_ai_filter');
+const BrowserLauncher = require('../../utils/browser_launcher');
 const { humanDelay } = require('../../utils/delay');
 
 /**
@@ -59,26 +60,28 @@ class FacebookRunner {
    * Kiểm tra phiên đăng nhập Facebook
    */
   async ensureLoggedIn(page, onProgress) {
-    if (onProgress) onProgress('[Facebook] Đang kiểm tra trạng thái đăng nhập...');
+    if (onProgress) onProgress('[Facebook] Đang xác thực phiên làm việc...');
     try {
       await page.goto('https://www.facebook.com/', { waitUntil: 'domcontentloaded', timeout: 45000 });
     } catch {
       // Bỏ qua lỗi load ban đầu nếu mạng chậm
     }
 
-    // Kiểm tra đăng nhập bằng cookie chuẩn 'c_user' của Facebook
     const cookies = await page.cookies();
     const isLoggedIn = cookies.some(c => c.name === 'c_user');
 
     if (!isLoggedIn) {
       if (onProgress) {
-        onProgress('⚠️ [Facebook] CHƯA CÓ PHIÊN ĐĂNG NHẬP!');
-        onProgress('👉 Vui lòng nhấp đúp vào file "login-facebook.bat" trong thư mục dự án (hoặc chạy: .\\login-facebook.bat) để đăng nhập Facebook 1 lần duy nhất.');
+        onProgress('⚠️ [Facebook] Chưa phát hiện phiên đăng nhập trực tiếp trên trình duyệt ngầm. Đang thử tải lại...');
       }
-      throw new Error('Chưa có phiên đăng nhập Facebook trong profile độc lập (~/.job-scout-vn/browser_profile). Hãy chạy file "login-facebook.bat" để đăng nhập.');
-    } else {
-      if (onProgress) onProgress('✅ [Facebook] Đã nhận diện phiên đăng nhập thành công.');
+      await humanDelay(2000, 3000);
+      const retryCookies = await page.cookies();
+      if (!retryCookies.some(c => c.name === 'c_user')) {
+        throw new Error('Phiên đăng nhập Facebook chưa sẵn sàng hoặc đã hết hạn. Vui lòng đăng nhập lại.');
+      }
     }
+
+    if (onProgress) onProgress('✅ [Facebook] Phiên đăng nhập hoạt động tốt.');
   }
 
   /**
@@ -187,6 +190,14 @@ class FacebookRunner {
   async run({ targetGroups = [], onProgress = null } = {}) {
     if (!targetGroups || targetGroups.length === 0) {
       throw new Error('Chưa có danh sách Group/Fanpage mục tiêu! Hãy cung cấp ít nhất 1 link Group.');
+    }
+
+    // 1. Tự động kiểm tra và mở giao diện đăng nhập nếu chưa có phiên
+    const hasSession = BrowserLauncher.hasFacebookSession(this.userDataDir);
+    if (!hasSession) {
+      await BrowserLauncher.openInteractiveLogin(this.userDataDir, onProgress);
+    } else {
+      if (onProgress) onProgress('✅ [Facebook] Đã nhận diện phiên đăng nhập Facebook sẵn có.');
     }
 
     let browser = null;
