@@ -32,10 +32,11 @@ Khi tiếp nhận yêu cầu, AI chủ động nhận diện hoàn cảnh của 
 1. ⚡ **Chế độ Siêu Tốc (Mặc định — 5 Nguồn Zero-Login):**
    - Quét đồng thời ITViec, LinkedIn, CareerViet, ViệcLàm24h & Threads.
    - Lệnh: `node cli.js --url <URL>` hoặc `node cli.js --cv <CV_PATH>`
-2. 📘 **Chế độ Facebook Targeted (Fail-Fast & Group Kín Chỉ Định):**
+2. 📘 **Chế độ Facebook Targeted (Fail-Fast & Nhận Diện Profile Qua Email):**
    - Người dùng yêu cầu quét Facebook: Bắt buộc cung cấp URL Group mục tiêu.
-   - Luồng chạy: **Ải Facebook thực thi đầu tiên** với Chrome profile riêng (`~/.job-scout-vn/browser_profile`). Nếu chưa login, mở Chrome đợi login; nếu không thành công, dừng tiến trình ngay lập tức.
-   - Lệnh: `node cli.js --url <URL> --sources facebook,itviec,linkedin --fb-groups "<GROUP_URLS>"`
+   - Nếu người dùng cung cấp email Chrome profile (ví dụ: `your_email@gmail.com`): Tự động trỏ đúng Profile Chrome đã đăng nhập thông qua cờ `--fb-email your_email@gmail.com`.
+   - Luồng chạy: **Ải Facebook thực thi đầu tiên**. Nếu chưa login, mở Chrome đợi login; nếu không thành công, dừng tiến trình ngay lập tức (Fail-Fast).
+   - Lệnh: `node cli.js --url <URL> --sources facebook,itviec,linkedin --fb-groups "<GROUP_URLS>" --fb-email <EMAIL>`
 3. 🌐 **Chế độ Công Ty Đa Quốc Gia & Remote:**
    - Người dùng yêu cầu môi trường tiếng Anh, MNCs, lương USD.
    - Lệnh: `node cli.js --sources itviec,linkedin --url <URL>`
@@ -47,7 +48,7 @@ Khi tiếp nhận yêu cầu, AI chủ động nhận diện hoàn cảnh của 
    - Thuật toán tự động siết chặt tiêu chuẩn DEV MATCH, loại bỏ 100% công việc cài Win, bấm cáp mạng.
 
 Nếu người dùng chỉ gõ `/job-scout-vn` cộc lốc chưa kèm link/file:
-> *"Chào bạn! Hãy gửi cho mình link Portfolio trực tuyến (ví dụ: https://thhoang.io.vn) hoặc đường dẫn file CV (.md, .txt) của bạn nhé. Bạn muốn mình quét nhanh toàn diện (5 sàn mở) hay chỉ nhắm vào công ty đa quốc gia / Remote trên LinkedIn & ITViec?"*
+> *"Chào bạn! Hãy gửi cho mình link Portfolio trực tuyến (ví dụ: https://myportfolio.dev) hoặc đường dẫn file CV (.md, .txt) của bạn nhé. Bạn muốn mình quét nhanh toàn diện (5 sàn mở) hay chỉ nhắm vào công ty đa quốc gia / Remote trên LinkedIn & ITViec?"*
 
 ## 3. Quy trình Thực thi Kỹ thuật (Workflow)
 

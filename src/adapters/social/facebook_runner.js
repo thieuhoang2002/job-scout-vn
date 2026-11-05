@@ -20,9 +20,88 @@ class FacebookRunner {
     this.name = 'facebook';
     this.label = 'Facebook Groups';
     this.filter = new SocialAiFilter(options);
-    this.userDataDir = options.userDataDir || path.join(os.homedir(), '.job-scout-vn', 'browser_profile');
     this.chromePath = options.chromePath || this.detectChromePath();
     this.maxAgeHours = options.maxAgeHours || 72;
+
+    this.profileEmail = options.profileEmail || null;
+    this.profileName = options.profileName || null;
+    this.resolvedProfile = FacebookRunner.resolveProfile(this.profileEmail || this.profileName);
+
+    this.defaultUserDataDir = path.join(os.homedir(), '.job-scout-vn', 'browser_profile');
+    this.userDataDir = options.userDataDir || (this.resolvedProfile ? FacebookRunner.getSystemUserDataDir() : this.defaultUserDataDir);
+  }
+
+  static getSystemUserDataDir() {
+    return path.join(os.homedir(), 'AppData', 'Local', 'Google', 'Chrome', 'User Data');
+  }
+
+  /**
+   * Tự động dò tìm Profile Chrome theo Email tài khoản hoặc tên Profile
+   * bằng cách đọc file 'Local State' (profile.info_cache) của Chrome.
+   */
+  static resolveProfile(identifier, customLocalStatePath = null) {
+    if (!identifier || typeof identifier !== 'string') return null;
+    const localStatePath = customLocalStatePath || path.join(FacebookRunner.getSystemUserDataDir(), 'Local State');
+    if (!fs.existsSync(localStatePath)) {
+      return null;
+    }
+
+    try {
+      const content = fs.readFileSync(localStatePath, 'utf8');
+      const data = JSON.parse(content);
+      const cache = data.profile?.info_cache;
+      if (!cache) return null;
+
+      const idLower = identifier.trim().toLowerCase();
+
+      // 1. Thử khớp chính xác thư mục (Default, Profile 1, Profile 2...)
+      for (const dirKey of Object.keys(cache)) {
+        if (dirKey.toLowerCase() === idLower) {
+          return {
+            profileDir: dirKey,
+            name: cache[dirKey].name || dirKey,
+            email: cache[dirKey].user_name || ''
+          };
+        }
+      }
+
+      // 2. Thử khớp email đăng nhập (user_name trong Local State)
+      for (const [dirKey, val] of Object.entries(cache)) {
+        if (val.user_name && val.user_name.toLowerCase() === idLower) {
+          return {
+            profileDir: dirKey,
+            name: val.name || dirKey,
+            email: val.user_name
+          };
+        }
+      }
+
+      // 3. Khớp theo Profile Name (ví dụ: "Work", "Personal")
+      for (const [dirKey, val] of Object.entries(cache)) {
+        if (val.name && val.name.toLowerCase() === idLower) {
+          return {
+            profileDir: dirKey,
+            name: val.name,
+            email: val.user_name || ''
+          };
+        }
+      }
+
+      // 4. Khớp một phần email
+      for (const [dirKey, val] of Object.entries(cache)) {
+        if (val.user_name && val.user_name.toLowerCase().includes(idLower)) {
+          return {
+            profileDir: dirKey,
+            name: val.name || dirKey,
+            email: val.user_name
+          };
+        }
+      }
+    } catch {
+      // Ignored
+    }
+
+    return null;
   }
 
   detectChromePath() {
@@ -37,7 +116,54 @@ class FacebookRunner {
     return 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
   }
 
-  async launchBrowser() {
+  async launchBrowser(onProgress) {
+    const launchArgs = [
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      '--disable-blink-features=AutomationControlled',
+      '--start-maximized'
+    ];
+
+    if (this.resolvedProfile) {
+      if (onProgress) {
+        onProgress(`[Facebook] 🎯 Đã tự động nhận diện Profile Chrome: "${this.resolvedProfile.name}" (${this.resolvedProfile.profileDir})`);
+      }
+      launchArgs.push(`--profile-directory=${this.resolvedProfile.profileDir}`);
+
+      try {
+        return await puppeteer.launch({
+          executablePath: this.chromePath,
+          userDataDir: this.userDataDir,
+          headless: false,
+          defaultViewport: null,
+          args: launchArgs
+        });
+      } catch (err) {
+        if (err.message && (err.message.includes('already running') || err.message.includes('EBUSY') || err.message.includes('locked'))) {
+          if (onProgress) {
+            onProgress(`⚠️ [Facebook] Profile Chrome "${this.resolvedProfile.name}" đang được mở ở cửa sổ khác.`);
+            onProgress('👉 Để không làm gián đoạn phiên làm việc hiện tại, Job Scout VN tự động chuyển sang Profile độc lập (~/.job-scout-vn/browser_profile)...');
+          }
+          if (!fs.existsSync(this.defaultUserDataDir)) {
+            fs.mkdirSync(this.defaultUserDataDir, { recursive: true });
+          }
+          return await puppeteer.launch({
+            executablePath: this.chromePath,
+            userDataDir: this.defaultUserDataDir,
+            headless: false,
+            defaultViewport: null,
+            args: [
+              '--no-sandbox',
+              '--disable-setuid-sandbox',
+              '--disable-blink-features=AutomationControlled',
+              '--start-maximized'
+            ]
+          });
+        }
+        throw err;
+      }
+    }
+
     if (!fs.existsSync(this.userDataDir)) {
       fs.mkdirSync(this.userDataDir, { recursive: true });
     }
@@ -47,12 +173,7 @@ class FacebookRunner {
       userDataDir: this.userDataDir,
       headless: false, // Headful để người dùng thấy và tránh anti-bot của Meta
       defaultViewport: null,
-      args: [
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--disable-blink-features=AutomationControlled',
-        '--start-maximized'
-      ]
+      args: launchArgs
     });
   }
 
@@ -199,7 +320,7 @@ class FacebookRunner {
     const allJobs = [];
 
     try {
-      browser = await this.launchBrowser();
+      browser = await this.launchBrowser(onProgress);
       const page = await browser.newPage();
 
       // Đặt user agent chuẩn

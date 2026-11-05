@@ -1,5 +1,9 @@
 const assert = require('assert');
+const fs = require('fs');
+const path = require('path');
+const os = require('os');
 const SocialAiFilter = require('../src/adapters/social/social_ai_filter');
+const FacebookRunner = require('../src/adapters/social/facebook_runner');
 const MatchEngine = require('../src/engine/matcher');
 const ProfileParser = require('../src/parsers/profile_parser');
 const HtmlGenerator = require('../src/generator/html_generator');
@@ -61,6 +65,41 @@ async function runTestSuite() {
   assert.ok(html.includes('5 Nền Tảng (Zero-Login)'), 'HTML phải thể hiện 5 nền tảng Zero-Login');
   console.log('✅ 5. Kiểm thử Khởi tạo Dashboard HTML (5 nền tảng Zero-Login): Đạt chuẩn');
   passed++;
+
+  // 6. Facebook Chrome Profile Resolver
+  const mockLocalStatePath = path.join(os.tmpdir(), `test_local_state_${Date.now()}.json`);
+  const mockData = {
+    profile: {
+      info_cache: {
+        Default: { name: 'Cá nhân', user_name: 'personal_user@example.com' },
+        'Profile 1': { name: 'Work Account', user_name: 'engineer@corp.com' },
+        'Profile 2': { name: 'Dev Profile', user_name: 'candidate@example.com' }
+      }
+    }
+  };
+  fs.writeFileSync(mockLocalStatePath, JSON.stringify(mockData), 'utf8');
+
+  try {
+    const matchedByEmail = FacebookRunner.resolveProfile('candidate@example.com', mockLocalStatePath);
+    assert.strictEqual(matchedByEmail.profileDir, 'Profile 2');
+    assert.strictEqual(matchedByEmail.name, 'Dev Profile');
+
+    const matchedByName = FacebookRunner.resolveProfile('Cá nhân', mockLocalStatePath);
+    assert.strictEqual(matchedByName.profileDir, 'Default');
+
+    const matchedByDir = FacebookRunner.resolveProfile('Profile 1', mockLocalStatePath);
+    assert.strictEqual(matchedByDir.profileDir, 'Profile 1');
+
+    const notFound = FacebookRunner.resolveProfile('nonexistent@example.com', mockLocalStatePath);
+    assert.strictEqual(notFound, null);
+
+    console.log('✅ 6. Kiểm thử Tự động nhận diện Profile Chrome qua Email (Local State): Đạt chuẩn');
+    passed++;
+  } finally {
+    if (fs.existsSync(mockLocalStatePath)) {
+      fs.unlinkSync(mockLocalStatePath);
+    }
+  }
 
   console.log(`\n🎉 HOÀN HẢO! Tất cả ${passed}/${passed} bài kiểm thử đã vượt qua thành công!\n`);
 }

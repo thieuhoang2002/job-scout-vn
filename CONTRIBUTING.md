@@ -31,7 +31,7 @@ Cảm ơn bạn đã quan tâm đến việc đóng góp cho dự án **Job Scou
    ```
 3. Viết mã nguồn và kiểm tra chạy thử:
    ```bash
-   node cli.js --url https://thhoang.io.vn --pages 2
+   node cli.js --url https://myportfolio.dev --pages 2
    ```
 4. Commit theo chuẩn Conventional Commits:
    - `feat: add itviec scraper adapter`

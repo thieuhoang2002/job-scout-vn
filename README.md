@@ -49,7 +49,7 @@ Khi tìm kiếm việc làm IT tại Việt Nam trên các trang tuyển dụng 
 - 🚪 **Chiến Thuật "Fail-Fast" (Facebook First):** Khi có yêu cầu Facebook, hệ thống sẽ thực thi ải khó này trước tiên. Vượt qua ải Facebook mới cào các sàn khác; nếu không thành công, hệ thống dừng lại ngay lập tức để tiết kiệm tài nguyên.
 - ⏱️ **Lọc Thời Gian Vàng (< 72 Giờ):** Tự động loại bỏ mọi bài đăng cũ hơn 3 ngày (> 72h) trên Threads & Facebook để đảm bảo vị trí tuyển dụng còn mở.
 - 🚫 **Lá Chắn AI Chống Scam & Bán Khóa Học:** Tự động phát hiện và loại bỏ 100% bài quảng cáo bootcamp lùa gà, nhiệm vụ online, việc nhẹ lương cao, cờ bạc.
-- 👤 **Bóc tách Hồ sơ Đa nguồn (Universal Profile Ingestion):** Tự động phân tích kỹ năng, số năm kinh nghiệm, các dự án từ **Link Portfolio trực tuyến** (như [thhoang.io.vn](https://thhoang.io.vn)) hoặc **File CV cục bộ** (`.md`, `.txt`, `.json`).
+- 👤 **Bóc tách Hồ sơ Đa nguồn (Universal Profile Ingestion):** Tự động phân tích kỹ năng, số năm kinh nghiệm, các dự án từ **Link Portfolio trực tuyến** (như `https://myportfolio.dev`) hoặc **File CV cục bộ** (`.md`, `.txt`, `.json`).
 - 🧠 **Ma trận Chấm Điểm Khách Quan (Match Engine):** Tính điểm tương thích $0 - 100\%$ dựa trên chuyên ngành, công nghệ cốt lõi và số năm kinh nghiệm thực tế. Tự động gắn nhãn `DEV MATCH` cho các tin lập trình thực thụ.
 - 📊 **Dashboard HTML Độc Lập (Self-Contained):** Xuất ra 1 file HTML duy nhất (Tailwind CSS + Chart.js) mở xem offline mọi lúc, có sẵn biểu đồ phân bổ mức lương, bộ lọc nhanh và link nộp hồ sơ trực tiếp.
 - 🤖 **Tương thích Đa nền tảng AI Agent:** Hỗ trợ chuẩn Skill cho **Google Antigravity**, **Claude Code**, và **OpenAI Codex CLI**.
@@ -91,37 +91,39 @@ Bạn **không cần phải gõ code phức tạp hay mở terminal**. Hệ th�
 #### ⚡ Hoàn cảnh 1: Chế độ Siêu Tốc — 100% Zero-Login (Mặc định)
 > Quét tức thì 5 nền tảng mở (ITViec, LinkedIn, CareerViet, ViệcLàm24h, Threads), không cần bất kỳ tài khoản nào.
 ```text
-/job-scout-vn https://thhoang.io.vn
+/job-scout-vn https://myportfolio.dev
 ```
 *Hoặc chat tự nhiên:*
-> *"Tìm giúp mình các việc làm IT phù hợp với portfolio https://thhoang.io.vn"*
+> *"Tìm giúp mình các việc làm IT phù hợp với portfolio https://myportfolio.dev"*
 
 ---
 
-#### 📘 Hoàn cảnh 2: Săn Việc Trên Group Facebook Chỉ Định (Fail-Fast & Profile Riêng)
-> Quét các hội nhóm công nghệ hoặc group kín đã tham gia. Mở trình duyệt riêng, người dùng tự đăng nhập an toàn, thực thi ải đầu tiên.
+#### 📘 Hoàn cảnh 2: Săn Việc Trên Group Facebook Chỉ Định (Fail-Fast & Nhận Diện Profile Thông Minh)
+> Quét các hội nhóm công nghệ hoặc group kín đã tham gia. Hỗ trợ tự động nhận diện Profile Chrome qua Email đăng nhập.
 ```text
-/job-scout-vn https://thhoang.io.vn --sources facebook,itviec,linkedin --fb-groups "https://facebook.com/groups/nodejsvietnam"
+/job-scout-vn https://myportfolio.dev --sources facebook,itviec,linkedin --fb-groups "https://facebook.com/groups/nodejsvietnam" --fb-email your_email@gmail.com
 ```
 *Hoặc chat tự nhiên:*
-> *"Quét giúp mình các job Node.js trên group https://facebook.com/groups/nodejsvietnam kèm theo các công ty trên ITViec và LinkedIn."*
+> *"Quét giúp mình các job Node.js trên group https://facebook.com/groups/nodejsvietnam kèm theo các công ty trên ITViec và LinkedIn. Mình đang đăng nhập facebook ở trình duyệt Chrome, profile your_email@gmail.com."*
+
+💡 **Tiện ích nhận diện Profile:** Nếu máy bạn có nhiều Profile Chrome, chỉ cần ghi kèm email (ví dụ: `your_email@gmail.com`), Job Scout VN sẽ tự động đối chiếu và mở đúng Profile đã đăng nhập Facebook sẵn mà bạn không cần phải đăng nhập lại hay tìm thư mục profile thủ công!
 
 ---
 
 #### 🌐 Hoàn cảnh 3: Săn Việc Công Ty Đa Quốc Gia & Lương USD (Chỉ ITViec + LinkedIn)
 > Tập trung vào doanh nghiệp nước ngoài, môi trường tiếng Anh, mức đãi ngộ cao và làm việc linh hoạt/Remote.
 ```text
-/job-scout-vn https://thhoang.io.vn --sources itviec,linkedin
+/job-scout-vn https://myportfolio.dev --sources itviec,linkedin
 ```
 *Hoặc chat tự nhiên:*
-> *"Đối chiếu portfolio https://thhoang.io.vn giúp mình, chỉ tìm việc trên ITViec và LinkedIn, ưu tiên các vị trí Remote hoặc lương trên 25 triệu."*
+> *"Đối chiếu portfolio https://myportfolio.dev giúp mình, chỉ tìm việc trên ITViec và LinkedIn, ưu tiên các vị trí Remote hoặc lương trên 25 triệu."*
 
 ---
 
 #### 🧵 Hoàn cảnh 4: Săn Tin Tuyển Tuyển Dụng Nóng Hổi Từ Tech Lead Trên Threads (< 72 Giờ)
 > Bắt kịp các cơ hội tuyển trực tiếp, phản hồi siêu tốc từ các kỹ sư và trưởng nhóm công nghệ trên Threads.
 ```text
-/job-scout-vn https://thhoang.io.vn --sources threads
+/job-scout-vn https://myportfolio.dev --sources threads
 ```
 *Hoặc chat tự nhiên:*
 > *"Quét giúp mình các bài tuyển dụng React và Node.js mới đăng trong 3 ngày qua trên Threads."*
@@ -156,20 +158,27 @@ Một file Dashboard HTML độc lập, mở ngay trên trình duyệt mà khôn
 Nếu bạn muốn tích hợp vào script tự động hoặc chạy thủ công qua Terminal:
 
 ```bash
-# 1. Chạy với link website Portfolio
-node cli.js --url https://thhoang.io.vn
+# 1. Chạy với link website Portfolio (5 sàn Zero-Login)
+node cli.js --url https://myportfolio.dev
 
-# 2. Hoặc chạy với file CV có sẵn trên máy
+# 2. Chạy với Facebook Group & nhận diện Profile Chrome qua email
+node cli.js --url https://myportfolio.dev --sources facebook,itviec,linkedin --fb-groups "https://facebook.com/groups/nodejsvietnam" --fb-email your_email@gmail.com
+
+# 3. Hoặc chạy với file CV có sẵn trên máy
 node cli.js --cv ./examples/sample_cv.md --pages 4
 
-# 3. Mở kết quả trên trình duyệt
+# 4. Mở kết quả trên trình duyệt
 start output/dashboard.html
 ```
 
 **Bảng cờ lệnh (CLI Flags):**
-- `--url <link>`: Đường dẫn website Portfolio cá nhân.
+- `--url <link>`: Đường dẫn website Portfolio cá nhân (ví dụ: `https://myportfolio.dev`).
 - `--cv <path>`: Đường dẫn file CV Markdown (`.md`), Text (`.txt`), hoặc JSON (`.json`).
-- `--pages <num>`: Số trang tuyển dụng cần quét (Mặc định: 8 trang ~150 jobs).
+- `--sources <list>`: Danh sách nền tảng quét (mặc định: `vieclam24h,itviec,careerviet,linkedin,threads`).
+- `--fb-groups <urls>`: Danh sách link Group Facebook mục tiêu.
+- `--fb-email <email>`: Email đăng nhập của Profile Chrome cần dùng (ví dụ: `your_email@gmail.com`).
+- `--fb-profile <name>`: Tên Profile Chrome (ví dụ: `Default`, `Profile 1`, `Cá nhân`).
+- `--pages <num>`: Số trang tuyển dụng cần quét (Mặc định: 6 trang).
 - `--output <path>`: Vị trí lưu file HTML (Mặc định: `./output/dashboard.html`).
 
 </details>
@@ -195,7 +204,10 @@ start output/dashboard.html
 
 <details>
 <summary><strong>4. Cơ chế quét Facebook Groups hoạt động thế nào? Có an toàn tài khoản không?</strong></summary>
-<p><strong>Cực kỳ an toàn và cách ly hoàn toàn:</strong> Tool sử dụng một thư mục trình duyệt chuyên biệt (<code>~/.job-scout-vn/browser_profile</code>) riêng biệt, không đụng chạm vào tài khoản trên các trình duyệt bạn dùng hàng ngày. Khi cần quét, cửa sổ trình duyệt sẽ mở lên để bạn tự đăng nhập. Phiên làm việc được lưu bền vững cục bộ. Tool áp dụng chiến lược <strong>Fail-Fast</strong> (thực thi Facebook đầu tiên, nếu lỗi thì dừng ngay lập tức) và chỉ cuộn nhẹ nhàng mô phỏng người thật trên đúng các Group bạn chỉ định trong Prompt.</p>
+<p><strong>Cực kỳ an toàn và linh hoạt:</strong> Tool hỗ trợ 2 chế độ:
+<br>1. <strong>Tự động nhận diện Profile:</strong> Nếu bạn ghi kèm email (ví dụ: <code>your_email@gmail.com</code>), tool sẽ tự động đọc danh bạ Profile Chrome trên máy và mở đúng Profile đã đăng nhập Facebook sẵn.
+<br>2. <strong>Profile độc lập cách ly:</strong> Nếu không chỉ định, tool khởi chạy thư mục riêng biệt (<code>~/.job-scout-vn/browser_profile</code>) để bạn đăng nhập an toàn mà không ảnh hưởng tới bất kỳ dữ liệu duyệt web nào khác.
+<br>Tool luôn áp dụng chiến lược <strong>Fail-Fast</strong> (thực thi Facebook đầu tiên, nếu lỗi thì dừng ngay lập tức) và chỉ cuộn nhẹ nhàng mô phỏng người thật trên đúng các Group bạn chỉ định trong Prompt.</p>
 </details>
 
 ---
