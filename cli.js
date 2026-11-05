@@ -29,6 +29,7 @@ Các tùy chọn:
   --fb-groups <urls>    Danh sách link Group Facebook mục tiêu (cách nhau bởi dấu phẩy)
   --pages <number>      Số trang cần quét trên các sàn lớn (mặc định: 6 trang)
   --output <file>       Đường dẫn file HTML xuất ra (mặc định: ./output/dashboard.html)
+  --login-facebook      Khởi động cửa sổ đăng nhập Facebook vào Profile cách ly
   --help                Hiển thị hướng dẫn này
 
 Ví dụ:
@@ -37,6 +38,9 @@ Ví dụ:
 
   # 2. Quét chuyên biệt có Facebook (Facebook First):
   node cli.js --url https://myportfolio.dev --sources facebook,itviec,linkedin --fb-groups "https://facebook.com/groups/nodejsvietnam"
+
+  # 3. Đăng nhập trước Facebook (nếu muốn):
+  node cli.js --login-facebook
 `);
 }
 
@@ -45,6 +49,18 @@ async function main() {
 
   if (args.includes('--help') || args.includes('-h')) {
     printHelp();
+    return;
+  }
+
+  if (args.includes('--login-facebook')) {
+    const FacebookRunner = require('./src/adapters/social/facebook_runner');
+    const runner = new FacebookRunner();
+    const batPath = runner.ensureLoginScript();
+    console.log(`\n🔑 [Job Scout VN] Khởi tạo công cụ đăng nhập Facebook:`);
+    console.log(`👉 File script khởi động Chrome: ${batPath}`);
+    console.log(`👉 Bạn có thể chạy: start "${batPath}"`);
+    const { exec } = require('child_process');
+    exec(`start "" "${batPath}"`);
     return;
   }
 

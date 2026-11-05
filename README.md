@@ -200,7 +200,7 @@ start output/dashboard.html
 
 <details>
 <summary><strong>4. Cơ chế quét Facebook Groups hoạt động thế nào? Có an toàn tài khoản không?</strong></summary>
-<p><strong>Cực kỳ an toàn và cách ly hoàn toàn:</strong> Tool sử dụng một thư mục profile riêng biệt (<code>~/.job-scout-vn/browser_profile</code>). Bạn có thể mở file tiện ích <code>DangNhapFacebook.bat</code> để đăng nhập Facebook đúng 1 lần duy nhất (phiên được lưu bền vững cục bộ cho các lần sau). Tool luôn áp dụng chiến lược <strong>Fail-Fast</strong> (thực thi Facebook đầu tiên, nếu lỗi thì dừng ngay lập tức) và cuộn nhẹ nhàng mô phỏng người thật trên đúng các Group bạn chỉ định trong Prompt.</p>
+<p><strong>Cực kỳ an toàn và cách ly hoàn toàn:</strong> Tool sử dụng một thư mục profile riêng biệt (<code>~/.job-scout-vn/browser_profile</code>). Khi lần đầu sử dụng hoặc cần đăng nhập, bạn chỉ cần chạy lệnh <code>node cli.js --login-facebook</code> hoặc mở file script tự sinh <code>~/.job-scout-vn/login-facebook.bat</code> để đăng nhập đúng 1 lần duy nhất (phiên được lưu bền vững cục bộ cho các lần sau). Tool luôn áp dụng chiến lược <strong>Fail-Fast</strong> (thực thi Facebook đầu tiên, nếu lỗi thì dừng ngay lập tức) và cuộn nhẹ nhàng mô phỏng người thật trên đúng các Group bạn chỉ định trong Prompt.</p>
 </details>
 
 ---

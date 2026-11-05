@@ -34,7 +34,8 @@ Khi tiếp nhận yêu cầu, AI chủ động nhận diện hoàn cảnh của 
    - Lệnh: `node cli.js --url <URL>` hoặc `node cli.js --cv <CV_PATH>`
 2. 📘 **Chế độ Facebook Targeted (Fail-Fast & Group Kín Chỉ Định):**
    - Người dùng yêu cầu quét Facebook: Bắt buộc cung cấp URL Group mục tiêu.
-   - Luồng chạy: **Ải Facebook thực thi đầu tiên** với profile cách ly (`~/.job-scout-vn/browser_profile`). Người dùng mở file `DangNhapFacebook.bat` để đăng nhập 1 lần duy nhất; nếu không có mục tiêu hoặc lỗi, dừng tiến trình ngay lập tức (Fail-Fast).
+   - Luồng chạy: **Ải Facebook thực thi đầu tiên** với profile cách ly (`~/.job-scout-vn/browser_profile`).
+   - Nếu chưa có phiên đăng nhập: Hệ thống tự động tạo script `~/.job-scout-vn/login-facebook.bat` và cung cấp đường dẫn để người dùng click mở đăng nhập 1 lần duy nhất (hoặc chạy `node cli.js --login-facebook`).
    - Lệnh: `node cli.js --url <URL> --sources facebook,itviec,linkedin --fb-groups "<GROUP_URLS>"`
 3. 🌐 **Chế độ Công Ty Đa Quốc Gia & Remote:**
    - Người dùng yêu cầu môi trường tiếng Anh, MNCs, lương USD.
@@ -45,6 +46,10 @@ Khi tiếp nhận yêu cầu, AI chủ động nhận diện hoàn cảnh của 
 5. 🎓 **Chế độ Junior / Fresher (Lọc Bẫy Helpdesk):**
    - Người dùng mới ra trường, chuyển ngành.
    - Thuật toán tự động siết chặt tiêu chuẩn DEV MATCH, loại bỏ 100% công việc cài Win, bấm cáp mạng.
+
+### 🔑 Thiết lập lần đầu cho tính năng Facebook (First-time Onboarding):
+- **5 sàn mở (ITViec, LinkedIn, CareerViet, ViệcLàm24h, Threads):** 100% Zero-Login, người dùng cài xong là dùng được ngay.
+- **Tính năng Facebook Groups:** Khi người dùng lần đầu yêu cầu Facebook, AI sẽ kiểm tra phiên và hướng dẫn người dùng mở script tự sinh `~/.job-scout-vn/login-facebook.bat` (hoặc `node cli.js --login-facebook`) để đăng nhập 1 lần duy nhất.
 
 Nếu người dùng chỉ gõ `/job-scout-vn` cộc lốc chưa kèm link/file:
 > *"Chào bạn! Hãy gửi cho mình link Portfolio trực tuyến (ví dụ: https://myportfolio.dev) hoặc đường dẫn file CV (.md, .txt) của bạn nhé. Bạn muốn mình quét nhanh toàn diện (5 sàn mở) hay chỉ nhắm vào công ty đa quốc gia / Remote trên LinkedIn & ITViec?"*

@@ -22,6 +22,30 @@ class FacebookRunner {
     this.userDataDir = options.userDataDir || path.join(os.homedir(), '.job-scout-vn', 'browser_profile');
   }
 
+  ensureLoginScript() {
+    const configDir = path.dirname(this.userDataDir);
+    if (!fs.existsSync(configDir)) {
+      fs.mkdirSync(configDir, { recursive: true });
+    }
+    const batPath = path.join(configDir, 'login-facebook.bat');
+    const batContent = `@echo off
+title Job Scout VN - Dang nhap Facebook
+echo ================================================================
+echo  Job Scout VN - Khoi dong Chrome dang nhap Facebook
+echo ================================================================
+echo.
+echo Dang mo Chrome tai: ${this.userDataDir} ...
+start "" "${this.chromePath}" --user-data-dir="${this.userDataDir}" https://www.facebook.com
+echo.
+echo Hay dang nhap Facebook tren cua so Chrome vua mo.
+echo Sau khi dang nhap xong, phien se duoc luu lai vinh vien cho Job Scout VN!
+echo.
+pause
+`;
+    fs.writeFileSync(batPath, batContent, 'utf8');
+    return batPath;
+  }
+
   detectChromePath() {
     const commonPaths = [
       'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
@@ -70,9 +94,11 @@ class FacebookRunner {
     let isLoggedIn = cookies.some(c => c.name === 'c_user');
 
     if (!isLoggedIn) {
+      const batPath = this.ensureLoginScript();
       if (onProgress) {
         onProgress('⚠️ [Facebook] Chưa tìm thấy phiên đăng nhập Facebook trong profile riêng!');
-        onProgress('👉 Vui lòng mở file "DangNhapFacebook_JobScout.bat" trên Desktop để đăng nhập.');
+        onProgress(`👉 File đăng nhập tự động tạo tại: ${batPath}`);
+        onProgress(`   (Bạn hãy mở file trên hoặc gõ: start "${batPath}")`);
         onProgress('⏳ Hệ thống đang đợi phát hiện phiên đăng nhập (tối đa 3 phút)...');
       }
 
@@ -93,7 +119,7 @@ class FacebookRunner {
       }
 
       if (!isLoggedIn) {
-        throw new Error('Hết thời gian chờ đăng nhập (3 phút). Hãy mở file DangNhapFacebook_JobScout.bat trên Desktop, hoàn tất đăng nhập rồi chạy lại.');
+        throw new Error(`Hết thời gian chờ đăng nhập (3 phút). Hãy mở file ${batPath}, hoàn tất đăng nhập rồi chạy lại.`);
       }
 
       if (onProgress) onProgress('✅ [Facebook] Nhận diện phiên đăng nhập thành công! Tiếp tục quét...');

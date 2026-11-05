@@ -8,6 +8,7 @@
   },
   "scripts": {
     "start": "node cli.js",
+    "login:fb": "node cli.js --login-facebook",
     "test": "node test/run_tests.js"
   },
   "keywords": [
