@@ -3,18 +3,14 @@ const path = require('path');
 const os = require('os');
 const puppeteer = require('puppeteer-core');
 const SocialAiFilter = require('./social_ai_filter');
-const BrowserLauncher = require('../../utils/browser_launcher');
 const { humanDelay } = require('../../utils/delay');
 
 /**
  * Facebook Targeted Runner (Dedicated Persistent Profile & Headful Automation)
- * 
- * Flow:
- * 1. Khởi chạy Chrome thực tế với Profile riêng biệt: ~/.job-scout-vn/browser_profile
- * 2. Kiểm tra trạng thái đăng nhập Facebook. Nếu chưa login, mở giao diện đợi người dùng login.
- * 3. Sau khi có session, truy cập chính xác các Group/Fanpage được chỉ định trong Prompt.
- * 4. Cuộn từng nấc ngẫu nhiên (Human Jitter) để mô phỏng người lướt.
- * 5. Bóc tách bài đăng, kiểm duyệt < 72h và loại bỏ 100% spam/khoá học.
+ * Tham chiếu cấu hình tối ưu từ PayKickstartTool & Agent-Reach:
+ * - Dùng profile độc lập ~/.job-scout-vn/browser_profile
+ * - Mở trực tiếp headful browser với ignoreDefaultArgs: ['--enable-automation']
+ * - Kiểm tra cookie 'c_user' để xác thực phiên đăng nhập
  */
 class FacebookRunner {
   constructor(options = {}) {
@@ -46,12 +42,15 @@ class FacebookRunner {
     return await puppeteer.launch({
       executablePath: this.chromePath,
       userDataDir: this.userDataDir,
-      headless: 'new', // Chạy ngầm mượt mà, không xung đột màn hình
-      defaultViewport: { width: 1280, height: 900 },
+      headless: false,
+      defaultViewport: null,
+      ignoreDefaultArgs: ['--enable-automation'],
       args: [
+        '--start-maximized',
+        '--disable-notifications',
+        '--disable-blink-features=AutomationControlled',
         '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--disable-blink-features=AutomationControlled'
+        '--disable-dev-shm-usage'
       ]
     });
   }
@@ -60,28 +59,47 @@ class FacebookRunner {
    * Kiểm tra phiên đăng nhập Facebook
    */
   async ensureLoggedIn(page, onProgress) {
-    if (onProgress) onProgress('[Facebook] Đang xác thực phiên làm việc...');
+    if (onProgress) onProgress('[Facebook] Đang kiểm tra trạng thái đăng nhập...');
     try {
       await page.goto('https://www.facebook.com/', { waitUntil: 'domcontentloaded', timeout: 45000 });
     } catch {
       // Bỏ qua lỗi load ban đầu nếu mạng chậm
     }
 
-    const cookies = await page.cookies();
-    const isLoggedIn = cookies.some(c => c.name === 'c_user');
+    let cookies = await page.cookies();
+    let isLoggedIn = cookies.some(c => c.name === 'c_user');
 
     if (!isLoggedIn) {
       if (onProgress) {
-        onProgress('⚠️ [Facebook] Chưa phát hiện phiên đăng nhập trực tiếp trên trình duyệt ngầm. Đang thử tải lại...');
+        onProgress('⚠️ [Facebook] Chưa có phiên đăng nhập!');
+        onProgress('👉 Vui lòng đăng nhập tài khoản Facebook của bạn trên cửa sổ Chrome vừa mở...');
       }
-      await humanDelay(2000, 3000);
-      const retryCookies = await page.cookies();
-      if (!retryCookies.some(c => c.name === 'c_user')) {
-        throw new Error('Phiên đăng nhập Facebook chưa sẵn sàng hoặc đã hết hạn. Vui lòng đăng nhập lại.');
-      }
-    }
 
-    if (onProgress) onProgress('✅ [Facebook] Phiên đăng nhập hoạt động tốt.');
+      const startTime = Date.now();
+      const maxWaitMs = 180000; // Đợi tối đa 3 phút
+
+      while (Date.now() - startTime < maxWaitMs) {
+        await new Promise(r => setTimeout(r, 1500));
+        try {
+          cookies = await page.cookies();
+          if (cookies.some(c => c.name === 'c_user')) {
+            isLoggedIn = true;
+            break;
+          }
+        } catch {
+          // Bỏ qua lỗi context khi page redirect trong lúc user đăng nhập
+        }
+      }
+
+      if (!isLoggedIn) {
+        throw new Error('Hết thời gian chờ đăng nhập (3 phút). Vui lòng thử lại và hoàn tất đăng nhập.');
+      }
+
+      if (onProgress) onProgress('✅ [Facebook] Đăng nhập thành công! Phiên đã được lưu cho các lần sau.');
+      await humanDelay(2000, 3000);
+    } else {
+      if (onProgress) onProgress('✅ [Facebook] Đã có phiên đăng nhập sẵn từ trước.');
+    }
   }
 
   /**
@@ -192,20 +210,13 @@ class FacebookRunner {
       throw new Error('Chưa có danh sách Group/Fanpage mục tiêu! Hãy cung cấp ít nhất 1 link Group.');
     }
 
-    // 1. Tự động kiểm tra và mở giao diện đăng nhập nếu chưa có phiên
-    const hasSession = BrowserLauncher.hasFacebookSession(this.userDataDir);
-    if (!hasSession) {
-      await BrowserLauncher.openInteractiveLogin(this.userDataDir, onProgress);
-    } else {
-      if (onProgress) onProgress('✅ [Facebook] Đã nhận diện phiên đăng nhập Facebook sẵn có.');
-    }
-
     let browser = null;
     const allJobs = [];
 
     try {
       browser = await this.launchBrowser(onProgress);
-      const page = await browser.newPage();
+      const pages = await browser.pages();
+      const page = pages[0] || (await browser.newPage());
 
       // Đặt user agent chuẩn
       await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36');
@@ -233,4 +244,3 @@ class FacebookRunner {
 }
 
 module.exports = FacebookRunner;
-
