@@ -58,7 +58,21 @@ pause
     return 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
   }
 
+  closeExistingProfileProcesses() {
+    try {
+      if (process.platform === 'win32') {
+        const { execSync } = require('child_process');
+        execSync(`powershell -NoProfile -Command "Get-CimInstance Win32_Process -Filter \\"name = 'chrome.exe'\\" | Where-Object { $_.CommandLine -like '*job-scout-vn*' } | ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }"`, { stdio: 'ignore' });
+      }
+    } catch {
+      // Bỏ qua nếu không có tiến trình nào đang chạy
+    }
+  }
+
   async launchBrowser(onProgress) {
+    this.closeExistingProfileProcesses();
+    await new Promise(r => setTimeout(r, 1000));
+
     if (!fs.existsSync(this.userDataDir)) {
       fs.mkdirSync(this.userDataDir, { recursive: true });
     }
