@@ -22,13 +22,27 @@ class BrowserLauncher {
     return false;
   }
 
+  static detectChromePath() {
+    const os = require('os');
+    const commonPaths = [
+      'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
+      'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
+      path.join(os.homedir(), 'AppData\\Local\\Google\\Chrome\\Application\\chrome.exe')
+    ];
+    for (const p of commonPaths) {
+      if (fs.existsSync(p)) return p;
+    }
+    return 'chrome.exe';
+  }
+
   static async openInteractiveLogin(userDataDir, onProgress) {
     if (onProgress) {
       onProgress('⚠️ [Facebook] Chưa phát hiện phiên đăng nhập.');
       onProgress('🚀 Đang tự động mở cửa sổ Chrome lên màn hình để bạn đăng nhập Facebook...');
     }
 
-    const chromeCmd = `start "" "chrome.exe" --user-data-dir="${userDataDir}" --new-window "https://www.facebook.com"`;
+    const chromePath = BrowserLauncher.detectChromePath();
+    const chromeCmd = `start "" "${chromePath}" --user-data-dir="${userDataDir}" --new-window "https://www.facebook.com"`;
     exec(chromeCmd, (err) => {
       if (err && onProgress) {
         onProgress(`⚠️ Lỗi khởi chạy Chrome: ${err.message}`);
