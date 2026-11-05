@@ -37,90 +37,47 @@ class FacebookRunner {
     return 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
   }
 
-  focusWindow() {
-    if (process.platform === 'win32') {
-      try {
-        const { exec } = require('child_process');
-        exec('powershell -Command "$wshell = New-Object -ComObject WScript.Shell; $wshell.AppActivate(\'Chrome\'); $wshell.AppActivate(\'Facebook\')"');
-      } catch {
-        // Ignored
-      }
-    }
-  }
-
   async launchBrowser(onProgress) {
     if (!fs.existsSync(this.userDataDir)) {
       fs.mkdirSync(this.userDataDir, { recursive: true });
     }
 
-    const browser = await puppeteer.launch({
+    return await puppeteer.launch({
       executablePath: this.chromePath,
       userDataDir: this.userDataDir,
-      headless: false,
-      defaultViewport: null,
+      headless: 'new', // Chạy ngầm mượt mà, không xung đột màn hình
+      defaultViewport: { width: 1280, height: 900 },
       args: [
         '--no-sandbox',
         '--disable-setuid-sandbox',
-        '--disable-blink-features=AutomationControlled',
-        '--start-maximized',
-        '--new-window',
-        '--window-position=50,50',
-        '--window-size=1280,900'
+        '--disable-blink-features=AutomationControlled'
       ]
     });
-
-    this.focusWindow();
-    return browser;
   }
 
   /**
-   * Kiểm tra và hướng dẫn đăng nhập nếu chưa có phiên
+   * Kiểm tra phiên đăng nhập Facebook
    */
   async ensureLoggedIn(page, onProgress) {
     if (onProgress) onProgress('[Facebook] Đang kiểm tra trạng thái đăng nhập...');
     try {
       await page.goto('https://www.facebook.com/', { waitUntil: 'domcontentloaded', timeout: 45000 });
-      await page.bringToFront();
-      this.focusWindow();
     } catch {
       // Bỏ qua lỗi load ban đầu nếu mạng chậm
     }
 
     // Kiểm tra đăng nhập bằng cookie chuẩn 'c_user' của Facebook
-    let cookies = await page.cookies();
-    let isLoggedIn = cookies.some(c => c.name === 'c_user');
+    const cookies = await page.cookies();
+    const isLoggedIn = cookies.some(c => c.name === 'c_user');
 
     if (!isLoggedIn) {
       if (onProgress) {
-        onProgress('⚠️ [Facebook] CHƯA CÓ PHIÊN ĐĂNG NHẬP! Cửa sổ trình duyệt đã bật lên.');
-        onProgress('👉 Vui lòng đăng nhập tài khoản Facebook trên cửa sổ vừa mở (chỉ cần đăng nhập 1 lần duy nhất, các lần sau sẽ tự nhớ)...');
+        onProgress('⚠️ [Facebook] CHƯA CÓ PHIÊN ĐĂNG NHẬP!');
+        onProgress('👉 Vui lòng nhấp đúp vào file "login-facebook.bat" trong thư mục dự án (hoặc chạy: .\\login-facebook.bat) để đăng nhập Facebook 1 lần duy nhất.');
       }
-      this.focusWindow();
-
-      const startTime = Date.now();
-      const maxWaitMs = 180000; // 3 phút
-
-      while (Date.now() - startTime < maxWaitMs) {
-        await new Promise(r => setTimeout(r, 1500));
-        try {
-          cookies = await page.cookies();
-          if (cookies.some(c => c.name === 'c_user')) {
-            isLoggedIn = true;
-            break;
-          }
-        } catch {
-          // Bỏ qua lỗi context khi page đang redirect trong lúc login
-        }
-      }
-
-      if (!isLoggedIn) {
-        throw new Error('Hết thời gian chờ đăng nhập (3 phút). Vui lòng thử lại và hoàn tất đăng nhập.');
-      }
-
-      if (onProgress) onProgress('✅ [Facebook] Đăng nhập thành công! Phiên đã được lưu cho các lần sau.');
-      await humanDelay(2000, 3500);
+      throw new Error('Chưa có phiên đăng nhập Facebook trong profile độc lập (~/.job-scout-vn/browser_profile). Hãy chạy file "login-facebook.bat" để đăng nhập.');
     } else {
-      if (onProgress) onProgress('✅ [Facebook] Đã có phiên đăng nhập sẵn từ trước.');
+      if (onProgress) onProgress('✅ [Facebook] Đã nhận diện phiên đăng nhập thành công.');
     }
   }
 
