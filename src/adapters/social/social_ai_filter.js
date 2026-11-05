@@ -1,5 +1,5 @@
 /**
- * Social AI Filter & Entity Extractor for Facebook Groups & Threads
+ * Social AI Filter & Entity Extractor for Threads Recruitment Posts
  * 
  * Strict Guardrails:
  * 1. Post Age Gate: Strictly < 3 days (< 72 hours). Older posts are dropped.
@@ -215,7 +215,7 @@ class SocialAiFilter {
   /**
    * Main filter & normalizer method
    */
-  filterAndNormalize(post, platform = 'facebook') {
+  filterAndNormalize(post, platform = 'threads') {
     const rawText = post.text || post.content || post.caption || '';
     if (!rawText || rawText.trim().length < 40) {
       return { valid: false, reason: 'Nội dung bài đăng quá ngắn hoặc trống' };
@@ -265,17 +265,14 @@ class SocialAiFilter {
       ageDisplay = 'Dưới 1 giờ trước';
     }
 
-    const sourceName = platform === 'threads' ? 'threads.net' : 'facebook.com';
-    const sourceLabel = platform === 'threads' ? 'Threads' : (post.group_name || 'Facebook Group');
-
     return {
       valid: true,
       job: {
-        id: post.id || `${platform}_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
-        source: sourceName,
-        source_label: sourceLabel,
+        id: post.id || `threads_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
+        source: 'threads.net',
+        source_label: 'Threads',
         title: cleanTitle,
-        company: post.author || post.group_name || (platform === 'threads' ? 'Threads Recruiter' : 'Cộng đồng IT VN'),
+        company: post.author || 'Threads Recruiter',
         logo: '',
         category: isDev ? 'Lập trình / Dev' : 'Data / AI / BA / QA',
         salary_text: salary.text,
@@ -284,14 +281,14 @@ class SocialAiFilter {
         experience: post.experience || '1 - 3 năm (Thỏa thuận)',
         tags: tags.length > 0 ? tags : ['Software Engineer', 'Verified Post'],
         location: location,
-        url: post.url || (platform === 'threads' ? 'https://www.threads.net' : 'https://www.facebook.com'),
+        url: post.url || 'https://www.threads.net',
         is_dev: isDev,
         created_at: post.created_at || new Date().toISOString(),
         age_display: ageDisplay,
         age_hours: ageHours,
         contact_info: contact,
         is_social: true,
-        platform_type: platform // 'facebook' or 'threads'
+        platform_type: 'threads'
       }
     };
   }

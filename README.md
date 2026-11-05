@@ -177,8 +177,8 @@ start output/dashboard.html
 </details>
 
 <details>
-<summary><strong>4. Cơ chế quét Facebook Groups & Threads hoạt động thế nào? Có an toàn tài khoản không?</strong></summary>
-<p><strong>Cực kỳ an toàn và tôn trọng quyền riêng tư:</strong> Tool không bao giờ yêu cầu bạn nhập mật khẩu hay gửi cookie ra ngoài internet. Bạn có thể sử dụng file thu thập 1-click (<code>src/adapters/social/collector.js</code>) chạy trực tiếp trong tab Chrome đã đăng nhập để xuất bài viết từ các Group riêng tư bạn đã tham gia. Tất cả bài viết đều đi qua bộ lọc AI nghiêm ngặt: <strong>chỉ nhận bài &lt; 3 ngày (&lt; 72h)</strong> và <strong>tự động loại bỏ 100% bài bán khóa học, nhiệm vụ lừa đảo</strong>.</p>
+<summary><strong>4. Cơ chế quét tin tuyển dụng Threads hoạt động thế nào? Có an toàn tài khoản không?</strong></summary>
+<p><strong>Hoàn toàn Zero-Login và an toàn 100%:</strong> Tool không bao giờ yêu cầu bạn nhập mật khẩu hay đăng nhập tài khoản. Tool thu thập các bài đăng tuyển dụng công khai từ các Tech Lead &amp; HR công nghệ trên Threads. Mọi bài viết đều đi qua bộ lọc AI nghiêm ngặt: <strong>chỉ nhận bài &lt; 3 ngày (&lt; 72h)</strong> và <strong>tự động loại bỏ 100% bài bán khóa học, nhiệm vụ lừa đảo</strong>.</p>
 </details>
 
 ---
