@@ -43,11 +43,13 @@ Skill tự động hóa săn việc và đối chiếu năng lực thực chiế
   ```
 - **Kỹ thuật REA:** Nếu là link web (Next.js / Vue / React), hệ thống tự động bóc tách JSON-LD và RSC payload mà không cần mở trình duyệt.
 
-### Bước 3: Quét Dữ liệu Thị trường (Real-time Multi-source Scraping)
+### Bước 3: Quét Dữ liệu Thị trường (Real-time Multi-source Scraping — 6 Kênh)
 - Adapter `itviec.js`: Cào việc làm Tech/Product Startups từ ITViec.com.
 - Adapter `linkedin.js`: Cào việc làm từ các công ty đa quốc gia qua LinkedIn Guest API.
 - Adapter `careerviet.js`: Cào việc làm từ các tập đoàn FDI & Ngân hàng lớn từ CareerViet.vn.
 - Adapter `vieclam24h.js`: Cào việc làm doanh nghiệp từ Vieclam24h.vn qua Next.js SSR.
+- Adapter `facebook.js`: Quét bài tuyển dụng từ Facebook Groups công nghệ (Phiên duyệt trên máy, **chỉ nhận bài < 3 ngày / < 72h**, lọc sạch scam/khoá học).
+- Adapter `threads.js`: Quét bài tuyển dụng từ mạng xã hội Threads (**chỉ nhận bài < 72h**, bóc tách email/telegram liên hệ trực tiếp).
 - Tự động bóc tách: Lương min/max, kinh nghiệm, địa điểm, smart tags, tên công ty thật, link nộp đơn.
 
 ### Bước 4: Chấm điểm Tương thích & Lọc Phân khúc

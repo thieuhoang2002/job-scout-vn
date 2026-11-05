@@ -29,21 +29,26 @@ Khi tìm kiếm việc làm IT tại Việt Nam trên các trang tuyển dụng 
 > [!NOTE]
 > **Nguyên tắc phát triển trung thực:** Chúng tôi chỉ hiển thị những nền tảng đã được viết code hoàn chỉnh và chạy thực tế. Không quảng cáo những sàn chưa hoàn thiện.
 
-| Nền tảng | Trạng thái thực tế | Kỹ thuật bóc tách REA |
+| Nền tảng | Trạng thái thực tế | Kỹ thuật bóc tách & Lọc thông minh |
 | :--- | :---: | :--- |
 | **ITViec.com** | ✅ **Sẵn sàng 100%** | Bóc tách trực tiếp danh sách việc làm Software Dev, Tech Startups, Outsource xịn tại TP.HCM. |
 | **LinkedIn Jobs** | ✅ **Sẵn sàng 100%** | Khai thác cổng Guest Job Search API của LinkedIn không cần tài khoản đăng nhập. |
 | **CareerViet.vn** *(CareerBuilder)* | ✅ **Sẵn sàng 100%** | Bóc tách việc làm IT từ khối Ngân hàng, Doanh nghiệp FDI và Tập đoàn lớn. |
 | **Vieclam24h.vn** | ✅ **Sẵn sàng 100%** | Khai thác Next.js SSR `__NEXT_DATA__` (Cào hàng trăm việc làm trong 1.5s, không cần trình duyệt). |
+| **Facebook Groups** | ✅ **Sẵn sàng 100%** | Quét các hội nhóm lập trình (NodeJS, ReactJS, Golang, IT Jobs...). **Chỉ nhận bài < 3 ngày (< 72h)**, tích hợp AI lọc sạch 100% rác bán khoá học, scam. |
+| **Threads (threads.net)** | ✅ **Sẵn sàng 100%** | Quét bài đăng tuyển dụng từ mạng lưới Tech Lead & Recruiter công nghệ. **Chỉ nhận bài < 72h** với thông tin liên hệ và stack rõ ràng. |
 
 ---
 
 ## ⚡ Tính Năng Nổi Bật
 
 - 🚀 **Kỹ thuật REA (Reverse Engineering Analysis):** Khai thác trực tiếp Next.js SSR / App Router payloads (`__NEXT_DATA__`, RSC `self.__next_f.push`). Cào hàng trăm việc làm trong **1.5 giây**, không cần cài đặt Chromium / Puppeteer nặng nề, không tốn RAM.
+- 📱 **Săn Việc Trên Mạng Xã Hội (Facebook Groups & Threads):** Tận dụng phiên trình duyệt sẵn có của người dùng để quét các nhóm riêng tư đã tham gia hoặc trang công khai. 
+  - **Giới hạn thời gian vàng:** Tuyệt đối chỉ nhận các bài đăng **< 3 ngày (< 72 giờ)** để đảm bảo vị trí còn mở.
+  - **Lá chắn chống Scam & Bán khoá học:** Tự động loại bỏ hoàn toàn các bài quảng cáo bootcamp lùa gà, nhiệm vụ online, việc nhẹ lương cao, cờ bạc.
 - 👤 **Bóc tách Hồ sơ Đa nguồn (Universal Profile Ingestion):** Tự động phân tích kỹ năng, số năm kinh nghiệm, các dự án từ **Link Portfolio trực tuyến** (như [thhoang.io.vn](https://thhoang.io.vn)) hoặc **File CV cục bộ** (`.md`, `.txt`, `.json`).
 - 🧠 **Ma trận Chấm Điểm Khách Quan (Match Engine):** Tính điểm tương thích $0 - 100\%$ dựa trên chuyên ngành, công nghệ cốt lõi và số năm kinh nghiệm thực tế. Tự động gắn nhãn `DEV MATCH` cho các tin lập trình thực thụ.
-- 📊 **Dashboard HTML Độc Lập (Self-Contained):** Xuất ra 1 file HTML duy nhất (Tailwind CSS + Chart.js) mở xem offline mọi lúc, có sẵn biểu đồ phân bổ mức lương, bộ lọc nhanh và link nộp hồ sơ trực tiếp.
+- 📊 **Dashboard HTML Độc Lập (Self-Contained):** Xuất ra 1 file HTML duy nhất (Tailwind CSS + Chart.js) mở xem offline mọi lúc, có sẵn biểu đồ phân bổ mức lương theo 6 kênh, bộ lọc nhanh và link nộp hồ sơ trực tiếp.
 - 🤖 **Tương thích Đa nền tảng AI Agent:** Hỗ trợ chuẩn Skill cho **Google Antigravity**, **Claude Code**, và **OpenAI Codex CLI**.
 
 ---
@@ -54,11 +59,13 @@ Khi tìm kiếm việc làm IT tại Việt Nam trên các trang tuyển dụng 
 flowchart TD
     Candidate["Ứng Viên (Portfolio URL hoặc File CV)"] --> Parser["1. Universal Profile Parser<br/>(REA Web Extractor)"]
     
-    subgraph ScrapingLayer ["2. REA Zero-Browser Scraper"]
-        S1["Vieclam24h Adapter (Đã chạy)"]
-        S2["ITViec Adapter (Đã chạy)"]
-        S3["CareerViet Adapter (Đã chạy)"]
-        S4["LinkedIn Adapter (Đã chạy)"]
+    subgraph ScrapingLayer ["2. Đa Nền Tảng (6 Kênh Tuyển Dụng)"]
+        S1["Vieclam24h Adapter"]
+        S2["ITViec Adapter"]
+        S3["CareerViet Adapter"]
+        S4["LinkedIn Guest Adapter"]
+        S5["Facebook Groups Adapter (&lt; 72h + Anti-Scam)"]
+        S6["Threads Adapter (&lt; 72h + Anti-Scam)"]
     end
     
     Parser --> MatchEngine["3. Compatibility Match Engine<br/>(Phân loại Dev vs Helpdesk & Chấm điểm 0-100)"]
@@ -143,6 +150,11 @@ start output/dashboard.html
 <details>
 <summary><strong>3. Tôi không có website cá nhân thì có dùng được không?</strong></summary>
 <p>Có! Bạn chỉ cần tạo một file <code>my_cv.md</code> hoặc <code>my_cv.txt</code> liệt kê vài dòng về kỹ năng (ví dụ: React, Node.js, C#, SQL, 1 năm kinh nghiệm) rồi chạy lệnh <code>node cli.js --cv my_cv.md</code> là tool sẽ tự động đọc hiểu và phân tích bình thường.</p>
+</details>
+
+<details>
+<summary><strong>4. Cơ chế quét Facebook Groups & Threads hoạt động thế nào? Có an toàn tài khoản không?</strong></summary>
+<p><strong>Cực kỳ an toàn và tôn trọng quyền riêng tư:</strong> Tool không bao giờ yêu cầu bạn nhập mật khẩu hay gửi cookie ra ngoài internet. Bạn có thể sử dụng file thu thập 1-click (<code>src/adapters/social/collector.js</code>) chạy trực tiếp trong tab Chrome đã đăng nhập để xuất bài viết từ các Group riêng tư bạn đã tham gia. Tất cả bài viết đều đi qua bộ lọc AI nghiêm ngặt: <strong>chỉ nhận bài &lt; 3 ngày (&lt; 72h)</strong> và <strong>tự động loại bỏ 100% bài bán khóa học, nhiệm vụ lừa đảo</strong>.</p>
 </details>
 
 ---

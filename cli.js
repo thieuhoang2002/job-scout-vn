@@ -11,20 +11,27 @@ function printHelp() {
   console.log(`
 🎯 Job Scout VN - Personal AI Job Hunter & Reality Checker
 =============================================================
+Hỗ trợ 6 nền tảng: ITViec, LinkedIn, CareerViet, ViệcLàm24h, Facebook Groups & Threads.
+
 Sử dụng:
   node cli.js [options]
 
 Các tùy chọn:
   --url <url>        Đường dẫn website Portfolio của ứng viên (ví dụ: https://thhoang.io.vn)
   --cv <file>        Đường dẫn file CV (.md, .txt, .json)
-  --pages <number>   Số trang cần quét (mặc định: 8 trang, ~150 việc làm)
+  --sources <list>   Danh sách nền tảng quét (mặc định: vieclam24h,itviec,careerviet,linkedin,facebook,threads)
+  --pages <number>   Số trang cần quét trên các sàn lớn (mặc định: 6 trang)
   --output <file>    Đường dẫn file HTML xuất ra (mặc định: ./output/dashboard.html)
   --help             Hiển thị hướng dẫn này
 
+Bộ lọc Mạng Xã Hội (Facebook & Threads):
+  🛡️ Nghiêm ngặt: Chỉ lấy bài đăng < 3 ngày (< 72h) và tự động loại bỏ 100% bài bán khóa học, lừa đảo, nhiệm vụ!
+
 Ví dụ:
   node cli.js --url https://thhoang.io.vn
-  node cli.js --cv ./examples/sample_cv.md --pages 4
-  node cli.js --cv ./examples/sample_profile.json
+  node cli.js --cv ./examples/test_cv_frontend.md
+  node cli.js --cv ./examples/test_cv_backend.md
+  node cli.js --sources facebook,threads --cv ./examples/test_cv_frontend.md
 `);
 }
 
@@ -37,7 +44,8 @@ async function main() {
   }
 
   let profileInput = null;
-  let maxPages = 8;
+  let maxPages = 6;
+  let selectedSources = null;
   let outputPath = path.join(__dirname, 'output', 'dashboard.html');
 
   for (let i = 0; i < args.length; i++) {
@@ -48,7 +56,10 @@ async function main() {
       profileInput = args[i + 1];
       i++;
     } else if (args[i] === '--pages' && args[i + 1]) {
-      maxPages = parseInt(args[i + 1], 10) || 8;
+      maxPages = parseInt(args[i + 1], 10) || 6;
+      i++;
+    } else if (args[i] === '--sources' && args[i + 1]) {
+      selectedSources = args[i + 1].split(',').map(s => s.trim().toLowerCase());
       i++;
     } else if (args[i] === '--output' && args[i + 1]) {
       outputPath = path.resolve(args[i + 1]);
@@ -73,9 +84,10 @@ async function main() {
     process.exit(1);
   }
 
-  console.log(`\n📡 [2/4] Đang quét thị trường việc làm (REA Scraper, ${maxPages} trang)...`);
+  console.log(`\n📡 [2/4] Đang quét thị trường việc làm đa nguồn (6 nền tảng: ITViec, LinkedIn, CareerViet, ViệcLàm24h, FB Groups, Threads)...`);
   const jobs = await fetchAllJobs({
     maxPages,
+    sources: selectedSources,
     onProgress: (msg) => console.log(`   ${msg}`)
   });
   console.log(`✅ Đã quét thành công ${jobs.length} công việc thực tế.`);
