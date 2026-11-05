@@ -71,15 +71,16 @@ class FacebookRunner {
 
     if (!isLoggedIn) {
       if (onProgress) {
-        onProgress('⚠️ [Facebook] Chưa có phiên đăng nhập!');
-        onProgress('👉 Vui lòng đăng nhập tài khoản Facebook của bạn trên cửa sổ Chrome vừa mở...');
+        onProgress('⚠️ [Facebook] Chưa tìm thấy phiên đăng nhập Facebook trong profile riêng!');
+        onProgress('👉 Vui lòng mở file "DangNhapFacebook_JobScout.bat" trên Desktop để đăng nhập.');
+        onProgress('⏳ Hệ thống đang đợi phát hiện phiên đăng nhập (tối đa 3 phút)...');
       }
 
       const startTime = Date.now();
       const maxWaitMs = 180000; // Đợi tối đa 3 phút
 
       while (Date.now() - startTime < maxWaitMs) {
-        await new Promise(r => setTimeout(r, 1500));
+        await new Promise(r => setTimeout(r, 2000));
         try {
           cookies = await page.cookies();
           if (cookies.some(c => c.name === 'c_user')) {
@@ -92,10 +93,10 @@ class FacebookRunner {
       }
 
       if (!isLoggedIn) {
-        throw new Error('Hết thời gian chờ đăng nhập (3 phút). Vui lòng thử lại và hoàn tất đăng nhập.');
+        throw new Error('Hết thời gian chờ đăng nhập (3 phút). Hãy mở file DangNhapFacebook_JobScout.bat trên Desktop, hoàn tất đăng nhập rồi chạy lại.');
       }
 
-      if (onProgress) onProgress('✅ [Facebook] Đăng nhập thành công! Phiên đã được lưu cho các lần sau.');
+      if (onProgress) onProgress('✅ [Facebook] Nhận diện phiên đăng nhập thành công! Tiếp tục quét...');
       await humanDelay(2000, 3000);
     } else {
       if (onProgress) onProgress('✅ [Facebook] Đã có phiên đăng nhập sẵn từ trước.');

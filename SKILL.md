@@ -34,7 +34,7 @@ Khi tiếp nhận yêu cầu, AI chủ động nhận diện hoàn cảnh của 
    - Lệnh: `node cli.js --url <URL>` hoặc `node cli.js --cv <CV_PATH>`
 2. 📘 **Chế độ Facebook Targeted (Fail-Fast & Group Kín Chỉ Định):**
    - Người dùng yêu cầu quét Facebook: Bắt buộc cung cấp URL Group mục tiêu.
-   - Luồng chạy: **Ải Facebook thực thi đầu tiên** với profile cách ly (`~/.job-scout-vn/browser_profile`). Cửa sổ Chrome tự động bật nổi lên màn hình để người dùng đăng nhập 1 lần duy nhất; nếu không có mục tiêu hoặc lỗi, dừng tiến trình ngay lập tức (Fail-Fast).
+   - Luồng chạy: **Ải Facebook thực thi đầu tiên** với profile cách ly (`~/.job-scout-vn/browser_profile`). Người dùng mở file `DangNhapFacebook.bat` để đăng nhập 1 lần duy nhất; nếu không có mục tiêu hoặc lỗi, dừng tiến trình ngay lập tức (Fail-Fast).
    - Lệnh: `node cli.js --url <URL> --sources facebook,itviec,linkedin --fb-groups "<GROUP_URLS>"`
 3. 🌐 **Chế độ Công Ty Đa Quốc Gia & Remote:**
    - Người dùng yêu cầu môi trường tiếng Anh, MNCs, lương USD.
